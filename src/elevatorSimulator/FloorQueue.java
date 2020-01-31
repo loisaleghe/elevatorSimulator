@@ -5,7 +5,10 @@ package elevatorSimulator;
 
 import java.util.AbstractQueue;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author djani
@@ -13,13 +16,26 @@ import java.util.Iterator;
  */
 public class FloorQueue<Floor> extends AbstractQueue<Floor> {
 	
-	private ArrayList<Floor> floors = new ArrayList();
+	private ArrayList<Floor> floors;
 
 	/**
 	 * 
 	 */
 	public FloorQueue() {
-		// TODO Auto-generated constructor stub
+		this.floors = new ArrayList<Floor>();
+	}
+	
+	public void sort(boolean asc) {
+		if(asc) {
+			Collections.sort(this.floors, new Comparator<Floor>(){
+				@Override
+			    public int compare(Floor f1, Floor f2) {
+					Floor fl = new Floor();
+					return 1;
+			        //return f1.getFLoorNumber().compareTo(f2.getFloorNumber());
+			    }
+			});
+		}
 	}
 
 	@Override
@@ -37,7 +53,7 @@ public class FloorQueue<Floor> extends AbstractQueue<Floor> {
 	@Override
 	public Floor peek() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.floors.get(0);
 	}
 
 	@Override
@@ -49,7 +65,7 @@ public class FloorQueue<Floor> extends AbstractQueue<Floor> {
 	@Override
 	public int size() {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.floors.size();
 	}
 
 }
