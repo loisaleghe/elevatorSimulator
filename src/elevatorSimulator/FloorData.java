@@ -16,11 +16,42 @@ public class FloorData {
 	}
 	
 	//copy constructor 
-	FloorData(FloorData f){
+	public FloorData(FloorData f){
 		Time = f.Time;
 		Floor = f.Floor;
 		FloorButton = f.FloorButton;
 		CarButton = f.CarButton;
+	}
+	
+	public void setCarButton(int value) {
+		this.CarButton = value;
+	}
+	
+	public int getCarButtn() {
+		return this.CarButton;
+	}
+	
+	public void setFloorButton(String floorButtonValue) {
+		this.FloorButton = floorButtonValue;
+	}
+	
+	public String getFloorButton() {
+		return this.FloorButton;
+	}
+	
+	public void setFloor(int floorValue) {
+		this.Floor = floorValue;
+	}
+	
+	public int getFloor() {
+		return this.Floor;
+	}
+	
+	public void setTime(Time timeValue) {
+		this.Time = timeValue;
+	}
+	public Time getTime() {
+		return this.Time;
 	}
 
 }
