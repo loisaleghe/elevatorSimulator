@@ -1,6 +1,6 @@
 package elevatorSimulator;
 
-public enum elevatorDirection {
+public enum Direction {
 	UP, 
 	DOWN
 }
