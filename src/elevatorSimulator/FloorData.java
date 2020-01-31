@@ -14,5 +14,13 @@ public class FloorData {
 		this.FloorButton = FloorButton;
 		this.CarButton = CarButton;
 	}
+	
+	//copy constructor 
+	FloorData(FloorData f){
+		Time = f.Time;
+		Floor = f.Floor;
+		FloorButton = f.FloorButton;
+		CarButton = f.CarButton;
+	}
 
 }
