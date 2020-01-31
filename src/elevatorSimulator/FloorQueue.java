@@ -14,7 +14,7 @@ import java.util.List;
  * @author djani
  *
  */
-public class FloorQueue<Floor> extends AbstractQueue<Floor> {
+public class FloorQueue extends AbstractQueue<Floor> {
 	
 	private ArrayList<Floor> floors;
 
@@ -26,16 +26,7 @@ public class FloorQueue<Floor> extends AbstractQueue<Floor> {
 	}
 	
 	public void sort(boolean asc) {
-		if(asc) {
-			Collections.sort(this.floors, new Comparator<Floor>(){
-				@Override
-			    public int compare(Floor f1, Floor f2) {
-					Floor fl = new Floor();
-					return 1;
-			        //return f1.getFLoorNumber().compareTo(f2.getFloorNumber());
-			    }
-			});
-		}
+			this.floors.sort((floor1, floor2) -> asc ? floor1.getNumber().compareTo(floor2.getNumber()) : floor2.getNumber().compareTo(floor1.getNumber()));	
 	}
 
 	@Override
