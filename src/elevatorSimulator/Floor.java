@@ -12,6 +12,11 @@ public class Floor {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public Floor(Floor fl) {
+		this.number = fl.number;
+		// TODO Auto-generated constructor stub
+	}
+	
 	public Integer getNumber() {
 		return this.number;
 	}

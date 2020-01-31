@@ -5,10 +5,7 @@ package elevatorSimulator;
 
 import java.util.AbstractQueue;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author djani
@@ -29,21 +26,28 @@ public class FloorQueue extends AbstractQueue<Floor> {
 			this.floors.sort((floor1, floor2) -> asc ? floor1.getNumber().compareTo(floor2.getNumber()) : floor2.getNumber().compareTo(floor1.getNumber()));	
 	}
 
+	/**
+	 * Adds a floor at the tail of the floor queue
+	 */
 	@Override
-	public boolean offer(Floor e) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean offer(Floor fl) {
+		return this.floors.add(fl);
 	}
 
+	/**
+	 * Removes the floor at the head of the floor queue
+	 */
 	@Override
 	public Floor poll() {
-		// TODO Auto-generated method stub
-		return null;
+		Floor fl = new Floor(this.floors.remove(this.floors.size() - 1));
+		return fl;
 	}
 
+	/**
+	 * Fetches the floor at the head of the floor queue
+	 */
 	@Override
 	public Floor peek() {
-		// TODO Auto-generated method stub
 		return this.floors.get(0);
 	}
 
@@ -55,7 +59,6 @@ public class FloorQueue extends AbstractQueue<Floor> {
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
 		return this.floors.size();
 	}
 

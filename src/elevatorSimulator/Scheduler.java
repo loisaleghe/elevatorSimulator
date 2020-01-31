@@ -1,19 +1,42 @@
 package elevatorSimulator;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Scheduler implements Runnable {
 	
-	private FloorData floorData;
+	private int maxFloorDataCount;
+	private List<FloorData> floorsToSend;
 	
-	public Scheduler() {
-		floorData = null;
+	public Scheduler(int maxFloorDataCount) {
+		this.maxFloorDataCount = maxFloorDataCount;
+		this.floorsToSend = Arrays.asList(new FloorData[this.maxFloorDataCount]);
 	}
 	
-	public void sendFloorData(FloorData fL) {
-		this.floorData = new FloorData(fL);
+	public synchronized void sendFloorData(FloorData fl) {
+//		Wait until floor data array is not full
+		while(this.floorsToSend.size() >= this.maxFloorDataCount) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		this.floorsToSend.add(new FloorData(fl));
 	}
 	
-	public FloorData getFloorData(FloorData fL) {
-		return this.floorData;
+	public synchronized FloorData getFloorData(FloorData fL) {
+		//		Wait if there are no floors to send
+		while(this.floorsToSend.size() == 0) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return this.floorsToSend.remove(this.floorsToSend.size() - 1);
 	}
 
 	@Override
