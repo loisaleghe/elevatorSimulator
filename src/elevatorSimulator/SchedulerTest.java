@@ -40,9 +40,8 @@ class SchedulerTest extends Scheduler {
 		FloorData fd = new FloorData(new Time(System.currentTimeMillis()),5, Direction.UP, 8);
 		this.scheduler.sendData(fd);
 		FloorData newFloorData = this.scheduler.getData();
-		
+		System.out.println(fd + " == " + newFloorData);
 		assertEquals(fd, newFloorData, "Floor data must be equal");
-		fail("Not yet implemented");
 	}
 
 }
