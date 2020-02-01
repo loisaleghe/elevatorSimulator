@@ -10,30 +10,30 @@ import java.util.List;
 import java.util.Random;
 
 public class Scheduler implements Runnable {
-	
+
 	private FloorData floorData;
 	private boolean canSendData;
 	private boolean canGetData;
 	private boolean moreData;
-	
+
 	public Scheduler() {
 		this.floorData = null;
 		this.canGetData = false;
 		this.canSendData = true;
 		this.moreData = true;
 	}
-	
-	
+
+
 	public boolean getMoreData() {
 		return this.moreData;
 	}
-	
+
 	public void setMoreData(boolean moreData) {
 		this.moreData = moreData;
 	}
-	
+
 	public synchronized void sendData(FloorData fl) {
-//		Wait if flood data is being processed
+		//		Wait if flood data is being processed
 		while(!this.canSendData) {
 			try {
 				wait();
@@ -41,15 +41,15 @@ public class Scheduler implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		
-		System.out.println(Thread.currentThread().getName() + ": Requesting to go from floor " + fl.getFloor() + " to floor " + fl.getCarButton());
+
+		System.out.println("== Requesting to go from floor " + fl.getFloor() + " to floor " + fl.getCarButton());
 		this.floorData = new FloorData(fl);
 		this.canGetData = true;
 		this.canSendData = false;
-		
+
 		notifyAll();
 	}
-	
+
 	public synchronized FloorData getData() {
 		//		Wait if there is no floor data available
 		while(!this.canGetData) {
@@ -59,15 +59,15 @@ public class Scheduler implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		
-		System.out.println(Thread.currentThread().getName() + ": Adding floor " + this.floorData.getCarButton() + " to floors to visit ");
+
+		System.out.println( "== Adding floor " + this.floorData.getCarButton() + " to floors to visit ");
 		FloorData fl = new FloorData(this.floorData);
 		this.floorData = null;
 		this.canSendData = true;
 		this.canGetData = false;
-		
+
 		notifyAll();
-		
+
 		return fl;
 	}
 
@@ -75,10 +75,10 @@ public class Scheduler implements Runnable {
 	public void run() {
 
 	}
-	
+
 	public static void main(String[] args) {
 
-		   
+
 		Scheduler scheduler = new Scheduler();
 		Thread schedulerSubsystem = new Thread(scheduler, "Schedular");
 		Thread floorSubsystem = new Thread(new FloorSubsystem(scheduler), "Floor Subsystem");
@@ -87,8 +87,8 @@ public class Scheduler implements Runnable {
 		schedulerSubsystem.start();
 		elevatorSubsystem.start();
 		floorSubsystem.start();
-		
-		
+
+
 	}
 
 }

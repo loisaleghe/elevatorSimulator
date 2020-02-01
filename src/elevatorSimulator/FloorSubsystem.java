@@ -26,22 +26,23 @@ public class FloorSubsystem implements Runnable {
 				//			  Read line and convert to floor data
 				fd = new FloorData(FloorData.parseString(line));
 
-				//		  Send and get data from schedular
+				//		  Send data to scheduler
+				System.out.println("Floor Subsystem sending data to schedular");
 				this.scheduler.sendData(fd);
-//				this.scheduler.getData();
-				
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+
+				//				Sleep for some time then fetch data
+				Thread.sleep(2000);
+				System.out.println("Floor Subsystem fetching data from schedular");
+				this.scheduler.getData();
+
+				Thread.sleep(2000);
 			} 
-			
+
 			this.scheduler.setMoreData(false);
-			
+
 			br.close();
-			
-		}catch(IOException e) {
+
+		}catch(IOException | InterruptedException e) {
 			System.err.println(e.getMessage());
 		}
 		System.out.println("Floor finished");
