@@ -26,7 +26,7 @@ public class Scheduler implements Runnable {
 		this.floorsToSend.add(new FloorData(fl));
 	}
 	
-	public synchronized FloorData getFloorData(FloorData fL) {
+	public synchronized FloorData getFloorData() {
 		//		Wait if there are no floors to send
 		while(this.floorsToSend.size() == 0) {
 			try {
@@ -43,6 +43,16 @@ public class Scheduler implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public static void main(String[] args) {
+		Thread Scheduler = new Thread(new Scheduler());
+		Thread FloorSubsystem = new Thread(new FloorSubsystem());
+		Thread ElevatorSubsystem = new Thread(new ElevatorSubsystem())
+
+		Scheduler.start();
+		FloorSubsystem.start();
+		ElevatorSubsystem.start();
 	}
 
 }

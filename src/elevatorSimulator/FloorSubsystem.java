@@ -27,6 +27,8 @@ public class FloorSubsystem implements Runnable {
 			
 			
 			FloorData data = new FloorData(time, floorNumber, floorButton, carButton);
+			
+			scheduler.sendFloorData(data);
 		}
 	}
 }
