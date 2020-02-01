@@ -3,15 +3,6 @@ package elevatorSimulator;
  * The scheduler class represents the server in the system
  */
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
 public class Scheduler implements Runnable {
     
 	//creates an object of type floorData

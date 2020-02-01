@@ -4,12 +4,21 @@ import java.sql.Time;
 import java.util.Scanner;
 
 public class FloorData {
+	/**
+	 *  The purpose of this class is to contain the information which will be used by the scheduler
+	 */
 	public static final String DELIMITER = "#";
 	private Time time;
 	private int floor;
 	private Direction floorButton;
 	private int carButton;
-
+	/**
+	 * 
+	 * @param time, represents the time the floor data was created 
+	 * @param floor, represents the level or floor the elevator currently is 
+	 * @param floorButton, represents the direction of the floor you want to go to
+	 * @param carButton, represents the final destination or floor the user is going to 
+	 */
 	public FloorData(Time time, int floor, Direction floorButton, int carButton ) {
 		this.time = time;
 		this.floor = floor;
@@ -17,7 +26,12 @@ public class FloorData {
 		this.carButton = carButton;
 	}
 
-	//copy constructor 
+	//copy constructor
+	/**
+	 * 
+	 * @param f, represents a FloorData object 
+	 * this method is a copy constructor for anyone who wants to copy the floorDta object
+	 */
 	public FloorData(FloorData f){
 		time = new Time(f.time.getTime());
 		floor = f.floor;
@@ -64,11 +78,35 @@ public class FloorData {
 		return this.time + "#" + this.floor + "#" + this.floorButton + "#" + this.carButton;
 	}
 
+	/**
+	 * 
+	 * @param fd, represents a string from the file that will be converted 
+	 * @return a FloorData Object, representing the conversion of the string 
+	 */
 	public static FloorData parseString(String fd) {
 		Scanner scan = new Scanner(fd);
 		scan.useDelimiter(FloorData.DELIMITER);
 		scan.next(); // Skip time for now
 		return new FloorData(new Time(System.currentTimeMillis()), Integer.parseInt(scan.next()), Direction.valueOf(scan.next()), Integer.parseInt(scan.next()));
+	}
+
+	public boolean equals (Object o) {
+		if(this == o) {
+			return true;
+		}
+
+		if(o == null) {
+			return false;
+		}
+
+		if(o.getClass() != this.getClass()) {
+			return false;
+		}
+
+		FloorData floorData = (FloorData)o;
+		
+		return this.floor == floorData.floor && this.carButton == floorData.carButton && floorButton.equals(floorData.floorButton) && time.equals(floorData.time);
+
 	}
 
 }

@@ -2,6 +2,7 @@ package elevatorSimulator;
 
 public class Elevator {
 	
+	 
 	//creates a queue to represent the elevator moving up 
 	private FloorQueue upQueue; 
 	
