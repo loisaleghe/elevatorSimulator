@@ -42,7 +42,7 @@ public class Scheduler implements Runnable {
 			}
 		}
 
-		System.out.println("== Requesting to go from floor " + fl.getFloor() + " to floor " + fl.getCarButton());
+//		System.out.println("== Requesting to go from floor " + fl.getFloor() + " to floor " + fl.getCarButton());
 		this.floorData = new FloorData(fl);
 		this.canGetData = true;
 		this.canSendData = false;
@@ -60,7 +60,7 @@ public class Scheduler implements Runnable {
 			}
 		}
 
-		System.out.println( "== Adding floor " + this.floorData.getCarButton() + " to floors to visit ");
+//		System.out.println( "== Adding floor " + this.floorData.getCarButton() + " to floors to visit ");
 		FloorData fl = new FloorData(this.floorData);
 		this.floorData = null;
 		this.canSendData = true;

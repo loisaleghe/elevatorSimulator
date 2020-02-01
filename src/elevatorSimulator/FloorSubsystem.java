@@ -1,39 +1,40 @@
 package elevatorSimulator;
 
-import java.util.Random;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Time;
-import java.util.Date;
 
 public class FloorSubsystem implements Runnable {
 
-	private Scheduler scheduler;
+	private Scheduler scheduler; // This represents the scheduler that this floor subsystem will use to fetch ang send data
 
+	/**
+	 * Generates a new floor subsystem that communicates using the specified scheduler
+	 * @param scheduler, a scheduler, represents the scheduler through which this floor subsystem communicates
+	 */
 	public FloorSubsystem(Scheduler scheduler) {
 		this.scheduler = scheduler;
 	}
 
 	public void run() {
 		try {
-			//		Read floor data values from file
+			//	Read floor data values from file
 			BufferedReader br = new BufferedReader(new FileReader("floorRequests.txt")); 
 			FloorData fd;
 
 			String line; 
 			while ((line = br.readLine()) != null) {
-				//			  Read line and convert to floor data
+				//	Read line and convert to floor data
 				fd = new FloorData(FloorData.parseString(line));
 
-				//		  Send data to scheduler
-				System.out.println("Floor Subsystem sending data to schedular");
+				//	Send data to scheduler
+				System.out.println("== Floor Subsystem sending data << " + fd + " >> to schedular");
 				this.scheduler.sendData(fd);
 
-				//				Sleep for some time then fetch data
+				//	Sleep for some time then fetch data
 				Thread.sleep(2000);
-				System.out.println("Floor Subsystem fetching data from schedular");
-				this.scheduler.getData();
+				FloorData receivedFd = this.scheduler.getData();
+				System.out.println("== Floor Subsystem receiving data << " + receivedFd + " >> from schedular");
 
 				Thread.sleep(2000);
 			} 
