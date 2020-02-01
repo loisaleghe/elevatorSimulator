@@ -27,21 +27,22 @@ public class Elevator {
 	 * add floors to either the elevator going up or the elevator
 	 * going down
 	 */
-	public void addFloor (FloorData f) {
+	public void addFloor(Floor f) {
 		
 		//gets the destination of the floor that is pressed 
-		int floor = f.getCarButtn();
+		int floorNumber = f.getNumber();
+		int currentFloorNumber = currFloor.getNumber();
 		
 		//adds the floors to the queue and sorts them for the elevator moving down
-		if (floor < currFloor.getNumber()) {
-			downQueue.offer(new Floor(floor));
+		if (floorNumber < currentFloorNumber) {
+			downQueue.offer(new Floor(floorNumber));
 			
 			//is false to sort floors in descending order
 			downQueue.sort(false);
 		}
 		
-		else if (floor > currFloor.getNumber()) {
-			upQueue.offer(new Floor(floor));
+		else if (floorNumber > currentFloorNumber) {
+			upQueue.offer(new Floor(floorNumber));
 			
 			//is true to sort floors in ascending order
 			upQueue.sort(true);

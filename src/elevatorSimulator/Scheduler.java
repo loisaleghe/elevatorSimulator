@@ -1,21 +1,29 @@
 package elevatorSimulator;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class Scheduler implements Runnable {
 	
-	private int maxFloorDataCount;
-	private List<FloorData> floorsToSend;
+	private FloorData floorData;
+	private boolean canSendData;
+	private boolean canGetData;
 	
-	public Scheduler(int maxFloorDataCount) {
-		this.maxFloorDataCount = maxFloorDataCount;
-		this.floorsToSend = Arrays.asList(new FloorData[this.maxFloorDataCount]);
+	public Scheduler() {
+		this.floorData = null;
+		this.canGetData = false;
+		this.canSendData = true;
 	}
 	
-	public synchronized void sendFloorData(FloorData fl) {
-//		Wait until floor data array is not full
-		while(this.floorsToSend.size() >= this.maxFloorDataCount) {
+	public synchronized void sendData(FloorData fl) {
+//		Wait if flood data is being processed
+		while(!this.canSendData) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -23,12 +31,17 @@ public class Scheduler implements Runnable {
 			}
 		}
 		
-		this.floorsToSend.add(new FloorData(fl));
+		System.out.println(Thread.currentThread().getName() + ": Requesting to go to floor " + fl.getFloor() + " to floor " + fl.getCarButton());
+		this.floorData = new FloorData(fl);
+		this.canGetData = true;
+		this.canSendData = false;
+		
+		notifyAll();
 	}
 	
-	public synchronized FloorData getFloorData() {
-		//		Wait if there are no floors to send
-		while(this.floorsToSend.size() == 0) {
+	public synchronized FloorData getData() {
+		//		Wait if there is no floor data available
+		while(!this.canGetData) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -36,7 +49,15 @@ public class Scheduler implements Runnable {
 			}
 		}
 		
-		return this.floorsToSend.remove(this.floorsToSend.size() - 1);
+		System.out.println(Thread.currentThread().getName() + ": Adding floor " + this.floorData.getCarButton() + " to floors to visit ");
+		FloorData fl = new FloorData(this.floorData);
+		this.floorData = null;
+		this.canSendData = true;
+		this.canGetData = false;
+		
+		notifyAll();
+		
+		return fl;
 	}
 
 	@Override
@@ -46,13 +67,18 @@ public class Scheduler implements Runnable {
 	}
 	
 	public static void main(String[] args) {
-		Thread Scheduler = new Thread(new Scheduler());
-		Thread FloorSubsystem = new Thread(new FloorSubsystem());
-		Thread ElevatorSubsystem = new Thread(new ElevatorSubsystem())
 
-		Scheduler.start();
-		FloorSubsystem.start();
-		ElevatorSubsystem.start();
+		   
+		Scheduler scheduler = new Scheduler();
+		Thread schedulerSubsystem = new Thread(scheduler, "Schedular");
+		Thread floorSubsystem = new Thread(new FloorSubsystem(scheduler), "Floor Subsystem");
+		Thread elevatorSubsystem = new Thread(new ElevatorSubsystem(scheduler), "Elevator Subsystem");
+
+		schedulerSubsystem.start();
+		elevatorSubsystem.start();
+		floorSubsystem.start();
+		
+		
 	}
 
 }
