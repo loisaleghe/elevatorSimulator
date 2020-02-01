@@ -44,5 +44,15 @@ public class Scheduler implements Runnable {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public static void main(String[] args) {
+		Thread Scheduler = new Thread(new Scheduler());
+		Thread FloorSubsystem = new Thread(new FloorSubsystem());
+		Thread ElevatorSubsystem = new Thread(new ElevatorSubsystem())
+
+		Scheduler.start();
+		FloorSubsystem.start();
+		ElevatorSubsystem.start();
+	}
 
 }
