@@ -20,5 +20,12 @@ public class Floor {
 	public Integer getNumber() {
 		return this.number;
 	}
+	
+	/*
+	 * sets the number of the floor
+	 */
+	public void setNumber(int number) {
+		this.number = number;
+	}
 
 }
