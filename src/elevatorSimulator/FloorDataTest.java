@@ -44,8 +44,6 @@ class FloorDataTest {
 		String f; 
 		f = br.readLine();
 		fd = new FloorData(FloorData.parseString(f));
-		assertNotNull(fd);
-	
-		
+		assertNotNull(fd);	
 	}
 }
