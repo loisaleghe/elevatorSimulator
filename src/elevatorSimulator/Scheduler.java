@@ -94,8 +94,8 @@ public class Scheduler implements Runnable {
 		Thread elevatorSubsystem = new Thread(new ElevatorSubsystem(scheduler), "Elevator Subsystem");
 
 		schedulerSubsystem.start();
-		elevatorSubsystem.start();
 		floorSubsystem.start();
+		elevatorSubsystem.start();
 
 
 	}

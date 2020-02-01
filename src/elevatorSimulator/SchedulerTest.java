@@ -1,47 +1,34 @@
-/**
- * 
- */
 package elevatorSimulator;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.sql.Time;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-/**
- * @author djani
- *
- */
-class SchedulerTest extends Scheduler {
-	
+public class SchedulerTest {
+
 	private Scheduler scheduler;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeEach
-	void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		this.scheduler = new Scheduler();
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterEach
-	void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		this.scheduler = null;
 	}
 
 	@Test
-	void testSendAndFetchData() {
+	public void testSendAndFetchData() {
 		FloorData fd = new FloorData(new Time(System.currentTimeMillis()),5, Direction.UP, 8);
 		this.scheduler.sendData(fd);
 		FloorData newFloorData = this.scheduler.getData();
-		System.out.println(fd + " == " + newFloorData);
-		assertEquals(fd, newFloorData, "Floor data must be equal");
+		assertEquals("Floor data must be equal",fd, newFloorData);
 	}
+
 
 }
