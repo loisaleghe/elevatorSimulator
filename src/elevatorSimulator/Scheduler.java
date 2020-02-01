@@ -1,4 +1,7 @@
 package elevatorSimulator;
+/*
+ * The scheduler class represents the server in the system
+ */
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -10,12 +13,20 @@ import java.util.List;
 import java.util.Random;
 
 public class Scheduler implements Runnable {
-
+    
+	//creates an object of type floorData
 	private FloorData floorData;
+	
 	private boolean canSendData;
 	private boolean canGetData;
+	
+	//the scheduler stops when moreData is false
 	private boolean moreData;
-
+    
+	/*
+	 * The constructor to define the instance variables 
+	 * of the scheduler
+	 */
 	public Scheduler() {
 		this.floorData = null;
 		this.canGetData = false;
@@ -23,15 +34,18 @@ public class Scheduler implements Runnable {
 		this.moreData = true;
 	}
 
-
 	public boolean getMoreData() {
 		return this.moreData;
 	}
-
+    
 	public void setMoreData(boolean moreData) {
 		this.moreData = moreData;
 	}
-
+    
+	/*
+	 * This method is called by the Floor and Elevator Subsystems
+	 * to continuously send data to the scheduler
+	 */
 	public synchronized void sendData(FloorData fl) {
 		//		Wait if flood data is being processed
 		while(!this.canSendData) {
@@ -49,7 +63,11 @@ public class Scheduler implements Runnable {
 
 		notifyAll();
 	}
-
+    
+	/*
+	 * This method is called by the Floor and Elevator Subsystems
+	 * to continuously get data from the scheduler
+	 */
 	public synchronized FloorData getData() {
 		//		Wait if there is no floor data available
 		while(!this.canGetData) {
@@ -80,7 +98,7 @@ public class Scheduler implements Runnable {
 
 
 		Scheduler scheduler = new Scheduler();
-		Thread schedulerSubsystem = new Thread(scheduler, "Schedular");
+		Thread schedulerSubsystem = new Thread(scheduler, "Scheduler");
 		Thread floorSubsystem = new Thread(new FloorSubsystem(scheduler), "Floor Subsystem");
 		Thread elevatorSubsystem = new Thread(new ElevatorSubsystem(scheduler), "Elevator Subsystem");
 
