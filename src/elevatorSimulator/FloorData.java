@@ -89,5 +89,39 @@ public class FloorData {
 		scan.next(); // Skip time for now
 		return new FloorData(new Time(System.currentTimeMillis()), Integer.parseInt(scan.next()), Direction.valueOf(scan.next()), Integer.parseInt(scan.next()));
 	}
+	
+	public boolean equals (Object o) {
+		if(this == o) {
+			return true;
+		}
+
+		if(o == null) {
+			return false;
+		}
+
+		if(o.getClass() != this.getClass()) {
+			return false;
+		}
+		
+		FloorData floorData = (FloorData)o;
+		
+		if(this.floor != floorData.floor) {
+			return false;
+		}
+		
+		if(this.carButton != floorData.carButton) {
+			return false;
+		}
+		
+		if(!(floorButton.equals(floorData.floorButton))) {
+			return false;
+		}
+		
+		if(!(time.equals(floorData.time))) {
+			return false;
+		}
+		
+		return true;
+	}
 
 }
