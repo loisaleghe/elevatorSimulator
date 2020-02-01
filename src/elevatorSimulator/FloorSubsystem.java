@@ -1,11 +1,8 @@
 package elevatorSimulator;
 
-import java.util.Random;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Time;
-import java.util.Date;
 
 public class FloorSubsystem implements Runnable {
 
