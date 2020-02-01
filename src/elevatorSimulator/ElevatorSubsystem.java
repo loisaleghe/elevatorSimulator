@@ -19,11 +19,11 @@ public class ElevatorSubsystem implements Runnable {
 			while(this.scheduler.getMoreData()) {
 				//Fetch data from scheduler subsystem
 				FloorData fd = this.scheduler.getData();
-				System.out.println("Receiving elevator data  << " + fd + " >> from the scheduler");
+				System.out.println("== Elevator subsystem receiving data  << " + fd + " >> from the scheduler");
 
 				//Sleep for some time, then send data back to scheduler
 				Thread.sleep(2000);
-				System.out.println("Elevator Subsystem sending data << " + fd + " >> to scheduler");
+				System.out.println("== Elevator Subsystem sending data << " + fd + " >> to scheduler");
 				this.scheduler.sendData(fd);
 
 				Thread.sleep(2000);
