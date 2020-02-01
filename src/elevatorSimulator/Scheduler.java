@@ -1,4 +1,7 @@
 package elevatorSimulator;
+/*
+ * The scheduler class represents the server in the system
+ */
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
