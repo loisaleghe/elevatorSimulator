@@ -28,7 +28,7 @@ public class FloorSubsystem implements Runnable {
 
 				//		  Send and get data from schedular
 				this.scheduler.sendData(fd);
-				this.scheduler.getData();
+//				this.scheduler.getData();
 				
 				try {
 					Thread.sleep(1000);
@@ -37,10 +37,14 @@ public class FloorSubsystem implements Runnable {
 				}
 			} 
 			
+			this.scheduler.setMoreData(false);
+			
 			br.close();
+			
 		}catch(IOException e) {
 			System.err.println(e.getMessage());
 		}
+		System.out.println("Floor finished");
 	}
 }
 

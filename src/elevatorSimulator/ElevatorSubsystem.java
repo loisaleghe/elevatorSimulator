@@ -2,26 +2,27 @@ package elevatorSimulator;
 
 public class ElevatorSubsystem implements Runnable {
 	
-	private Scheduler schedular;
+	private Scheduler scheduler;
 	
 	public ElevatorSubsystem(Scheduler schedular) {
-		this.schedular = schedular;
+		this.scheduler = schedular;
 	}
 
 	@Override
 	public void run() {
 //		Continuously receive and send data from/to schedular
-		while(true) {
+		while(this.scheduler.getMoreData()) {
 //			Read data and send back to floor subsystem
-			FloorData fd = this.schedular.getData();
-			this.schedular.sendData(fd);
+			FloorData fd = this.scheduler.getData();
+//			this.scheduler.sendData(fd);
 			
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+		System.out.println("Elevator finished");
 		
 	}
 

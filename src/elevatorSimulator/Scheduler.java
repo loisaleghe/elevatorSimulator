@@ -14,11 +14,22 @@ public class Scheduler implements Runnable {
 	private FloorData floorData;
 	private boolean canSendData;
 	private boolean canGetData;
+	private boolean moreData;
 	
 	public Scheduler() {
 		this.floorData = null;
 		this.canGetData = false;
 		this.canSendData = true;
+		this.moreData = true;
+	}
+	
+	
+	public boolean getMoreData() {
+		return this.moreData;
+	}
+	
+	public void setMoreData(boolean moreData) {
+		this.moreData = moreData;
 	}
 	
 	public synchronized void sendData(FloorData fl) {
@@ -31,7 +42,7 @@ public class Scheduler implements Runnable {
 			}
 		}
 		
-		System.out.println(Thread.currentThread().getName() + ": Requesting to go to floor " + fl.getFloor() + " to floor " + fl.getCarButton());
+		System.out.println(Thread.currentThread().getName() + ": Requesting to go from floor " + fl.getFloor() + " to floor " + fl.getCarButton());
 		this.floorData = new FloorData(fl);
 		this.canGetData = true;
 		this.canSendData = false;
@@ -62,8 +73,7 @@ public class Scheduler implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
+
 	}
 	
 	public static void main(String[] args) {
