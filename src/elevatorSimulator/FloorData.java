@@ -3,55 +3,55 @@ package elevatorSimulator;
 import java.sql.Time;
 
 public class FloorData {
-	private Time Time;
-	private int Floor;
-	private Direction FloorButton;
-	private int CarButton;
+	private Time time;
+	private int floor;
+	private Direction floorButton;
+	private int carButton;
 	
-	public FloorData(Time Time, int Floor, Direction FloorButton, int CarButton ) {
-		this.Time = Time;
-		this.Floor = Floor;
-		this.FloorButton = FloorButton;
-		this.CarButton = CarButton;
+	public FloorData(Time time, int floor, Direction floorButton, int carButton ) {
+		this.time = time;
+		this.floor = floor;
+		this.floorButton = floorButton;
+		this.carButton = carButton;
 	}
 	
 	//copy constructor 
 	public FloorData(FloorData f){
-		Time = f.Time;
-		Floor = f.Floor;
-		FloorButton = f.FloorButton;
-		CarButton = f.CarButton;
+		time = new Time(f.time.getTime());
+		floor = f.floor;
+		floorButton = f.floorButton;
+		carButton = f.carButton;
 	}
 	
 	public void setCarButton(int value) {
-		this.CarButton = value;
+		this.carButton = value;
 	}
 	
 	public int getCarButtn() {
-		return this.CarButton;
+		return this.carButton;
 	}
 	
-	public void setFloorButton(String floorButtonValue) {
-		this.FloorButton = floorButtonValue;
+	public void setFloorButton(Direction floorButtonValue) {
+		this.floorButton = floorButtonValue;
 	}
 	
-	public String getFloorButton() {
-		return this.FloorButton;
+	public Direction getFloorButton() {
+		return this.floorButton;
 	}
 	
 	public void setFloor(int floorValue) {
-		this.Floor = floorValue;
+		this.floor = floorValue;
 	}
 	
 	public int getFloor() {
-		return this.Floor;
+		return this.floor;
 	}
 	
 	public void setTime(Time timeValue) {
-		this.Time = timeValue;
+		this.time = new Time(timeValue.getTime());
 	}
 	public Time getTime() {
-		return this.Time;
+		return this.time;
 	}
 
 }
