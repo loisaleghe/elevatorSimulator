@@ -26,7 +26,7 @@ public class Scheduler implements Runnable {
 		this.floorsToSend.add(new FloorData(fl));
 	}
 	
-	public synchronized FloorData getFloorData(FloorData fL) {
+	public synchronized FloorData getFloorData() {
 		//		Wait if there are no floors to send
 		while(this.floorsToSend.size() == 0) {
 			try {
