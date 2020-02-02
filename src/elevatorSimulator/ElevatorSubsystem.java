@@ -22,16 +22,16 @@ public class ElevatorSubsystem implements Runnable {
 				System.out.println("== Elevator subsystem receiving data  << " + fd + " >> from the scheduler");
 
 				//Sleep for some time, then send data back to scheduler
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 				System.out.println("== Elevator Subsystem sending data << " + fd + " >> to scheduler");
 				this.scheduler.sendData(fd);
 
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 			}
 		} catch(InterruptedException e) {
 
 		}
-		System.out.println("Elevator finished");
+		System.out.println("== Elevator Subsystem finished");
 
 	}
 
