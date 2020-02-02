@@ -1,0 +1,24 @@
+Group Contributions Iteration 1
+***********************
+
+Lois Aleghe:
+	* FloorData class, AllTests.java class
+	* Test Case (SchedulerTest.java)
+
+Hilaire Djani:
+	* Scheduler class, FloorSubsystem class
+	* Test Case (SchedulerTest.java)
+
+Ediomoabasi Emah: 
+	* ElevatorSubsystem class
+	* Test Case (FloorDataTest.java)
+
+Abdul-Rahmaan Rufai:
+	* FloorSubsytem
+	* Test Case (FloorDataTest.java)
+
+Mohammed-Yasir Suara: 
+	* README file
+	* UML diagrams
+	* Group Roles
+	* Direction class.
