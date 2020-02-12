@@ -57,7 +57,7 @@ public class Elevator {
 	/*
 	 * dictates the movement of the elevator
 	 */
-	public void move () {
+	public void move() {
 		
 		//scenarios for the elevator moving up
 		if (currDirection.equals(Direction.UP)) {
