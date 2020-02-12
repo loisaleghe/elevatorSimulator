@@ -25,6 +25,19 @@ public class Elevator {
 		 this.upQueue = new FloorQueue();
 		 this.downQueue = new FloorQueue();
 		 this.currFloor = new Floor(1);
+		 this.currDirection = Direction.IDLE;
+	}
+	
+	/**
+	 * Modifies the elevator's direction based on the state of it's queues
+	 */
+	private void adjustElevatorDirection() {
+		if(this.upQueue.isEmpty() && this.downQueue.isEmpty())
+			this.currDirection = Direction.IDLE;
+		else if(this.upQueue.isEmpty())
+			this.currDirection = Direction.DOWN;
+		else if(this.downQueue.isEmpty())
+			this.currDirection = Direction.UP;
 	}
 	 
 	/*
@@ -52,14 +65,6 @@ public class Elevator {
 			upQueue.sort(true);
 		}
 		
-	}
-	/*
-	 * gets the destination of the passenger
-	 * and adds it to the queue
-	 * @param f - type FloorData.
-	 */
-	public void pressButton(FloorData f) {
-		this.addFloor(new Floor(f.getCarButton()));
 	}
 	
 	/*
