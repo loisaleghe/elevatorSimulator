@@ -33,8 +33,8 @@ public class FloorSubsystem implements Runnable {
 
 				//	Sleep for some time then fetch data
 				Thread.sleep(1000);
-				FloorData receivedFd = this.scheduler.getData();
-				System.out.println("== Floor Subsystem receiving data << " + receivedFd + " >> from schedular");
+				//FloorData receivedFd = this.scheduler.getData();						Commented out. Iteration 2
+				//System.out.println("== Floor Subsystem receiving data << " + receivedFd + " >> from schedular");
 
 				Thread.sleep(1000);
 			} 

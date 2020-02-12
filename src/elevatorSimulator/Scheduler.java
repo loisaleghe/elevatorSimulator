@@ -1,4 +1,7 @@
 package elevatorSimulator;
+
+import java.util.ArrayList;
+
 /*
  * The scheduler class represents the server in the system
  */
@@ -6,7 +9,9 @@ package elevatorSimulator;
 public class Scheduler implements Runnable {
     
 	//creates an object of type floorData
-	private FloorData floorData;
+	//private FloorData floorData;
+	
+	private ArrayList<FloorData> floorData ;		//Arraylist containing floor data from requests from the same floor. Iteration 2
 	
 	private boolean canSendData;
 	private boolean canGetData;
@@ -19,10 +24,11 @@ public class Scheduler implements Runnable {
 	 * of the scheduler
 	 */
 	public Scheduler() {
-		this.floorData = null;
+		//this.floorData = null;
 		this.canGetData = false;
 		this.canSendData = true;
 		this.moreData = true;
+		this.floorData = new ArrayList<>();				//Iteration 2
 	}
 
 	public boolean getMoreData() {
@@ -32,6 +38,7 @@ public class Scheduler implements Runnable {
 	public void setMoreData(boolean moreData) {
 		this.moreData = moreData;
 	}
+	
     
 	/*
 	 * This method is called by the Floor and Elevator Subsystems
@@ -48,7 +55,8 @@ public class Scheduler implements Runnable {
 		}
 
 //		System.out.println("== Requesting to go from floor " + fl.getFloor() + " to floor " + fl.getCarButton());
-		this.floorData = new FloorData(fl);
+		//this.floorData = new FloorData(fl);
+		floorData.add(fl);				//Populating floor data arraylist with floordata then sending it to the elevator subsystem. Iteration 2
 		this.canGetData = true;
 		this.canSendData = false;
 
@@ -58,26 +66,40 @@ public class Scheduler implements Runnable {
 	/*
 	 * This method is called by the Floor and Elevator Subsystems
 	 * to continuously get data from the scheduler
+	 * 
+	 * Modified to return an arraylist of floordata. Iteration 2
 	 */
-	public synchronized FloorData getData() {
+	public synchronized ArrayList<FloorData> getData(Floor f) {
 		//		Wait if there is no floor data available
+		ArrayList<FloorData> temp = new ArrayList<>();
 		while(!this.canGetData) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			
+			//To check for requests from the same floor, then populating the floorD arraylist with the floordata. Iteration 2
+			int fn = f.getNumber();
+			
+			
+			for(FloorData fd: this.floorData) {
+				if(fd.getFloor() == fn) {
+					temp.add(fd);
+				}
+			}
 		}
 
 //		System.out.println( "== Adding floor " + this.floorData.getCarButton() + " to floors to visit ");
-		FloorData fl = new FloorData(this.floorData);
+		//FloorData fl = new FloorData(this.floorData);
 		this.floorData = null;
 		this.canSendData = true;
 		this.canGetData = false;
 
 		notifyAll();
-
-		return fl;
+		
+		//return fl;
+		return temp;
 	}
 
 	@Override
