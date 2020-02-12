@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
  * @author djani
  *
  */
-class SchedulerTest extends Scheduler {
+class SchedulerTest {
 	
 	private Scheduler scheduler;
 

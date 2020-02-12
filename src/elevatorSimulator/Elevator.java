@@ -1,6 +1,6 @@
 package elevatorSimulator;
 
-public class Elevator {
+public class Elevator implements Runnable {
 	
 	 
 	//creates a queue to represent the elevator moving up 
@@ -118,6 +118,18 @@ public class Elevator {
 				}	
 			}
 		}
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		//created an infinite loop and called move
+		while(true) {
+			this.move();
+		}
+		
+		
+		
 	}
 	
 	

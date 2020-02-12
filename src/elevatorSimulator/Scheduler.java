@@ -86,12 +86,12 @@ public class Scheduler implements Runnable {
 	}
 
 	public static void main(String[] args) {
-
+		//I added an elevator size to the scheduler
 
 		Scheduler scheduler = new Scheduler();
 		Thread schedulerSubsystem = new Thread(scheduler, "Scheduler");
 		Thread floorSubsystem = new Thread(new FloorSubsystem(scheduler), "Floor Subsystem");
-		Thread elevatorSubsystem = new Thread(new ElevatorSubsystem(scheduler), "Elevator Subsystem");
+		Thread elevatorSubsystem = new Thread(new ElevatorSubsystem(scheduler, 5), "Elevator Subsystem");
 
 		schedulerSubsystem.start();
 		elevatorSubsystem.start();
