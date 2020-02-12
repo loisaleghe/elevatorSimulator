@@ -1,5 +1,7 @@
 package elevatorSimulator;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author 
  */
@@ -38,6 +40,30 @@ public class Elevator {
 			this.currDirection = Direction.DOWN;
 		else if(this.downQueue.isEmpty())
 			this.currDirection = Direction.UP;
+	}
+	
+	/*
+	 * Sleeps for one second to open elevator door
+	 */
+	public void openElevatorDoor() {
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * Sleeps for one second to close elevator door
+	 */
+	public void closeElevatorDoor() {
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	 
 	/*
