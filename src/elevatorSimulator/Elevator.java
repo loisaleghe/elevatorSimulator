@@ -30,6 +30,28 @@ public class Elevator {
 		 this.currDirection = Direction.IDLE;
 	}
 	
+	/*
+	 * @return returns the floor the elevator is currently at
+	 */
+	public Floor getCurrentFloor() {
+		return this.currFloor;
+	}
+	
+	public void setCurrentFloor(Floor currFloor) {
+		this.currFloor = currFloor;
+	}
+	
+	/*
+	 * @return returns the direction the elevator is currently moving
+	 */
+	public Direction getCurrentDirection() {
+		return this.currDirection;
+	}
+	
+	public void setCurrentDirection(Direction currDirection) {
+		this.currDirection = currDirection;
+	}
+	
 	/**
 	 * Modifies the elevator's direction based on the state of it's queues
 	 */
