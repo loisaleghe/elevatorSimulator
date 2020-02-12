@@ -53,6 +53,14 @@ public class Elevator {
 		}
 		
 	}
+	/*
+	 * gets the destination of the passenger
+	 * and adds it to the queue
+	 * @param f - type FloorData.
+	 */
+	public void pressButton(FloorData f) {
+		this.addFloor(new Floor(f.getCarButton()));
+	}
 	
 	/*
 	 * dictates the movement of the elevator
