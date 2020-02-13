@@ -1,5 +1,8 @@
 package elevatorSimulator;
 
+/**
+ * @author 
+ */
 public class Floor {
 
 	private Integer number;

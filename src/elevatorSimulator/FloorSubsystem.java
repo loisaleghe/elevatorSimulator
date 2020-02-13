@@ -32,11 +32,11 @@ public class FloorSubsystem implements Runnable {
 				this.scheduler.sendData(fd);
 
 				//	Sleep for some time then fetch data
-				Thread.sleep(2000);
-				FloorData receivedFd = this.scheduler.getData();
-				System.out.println("== Floor Subsystem receiving data << " + receivedFd + " >> from schedular");
+				Thread.sleep(1000);
+				//FloorData receivedFd = this.scheduler.getData();						Commented out. Iteration 2
+				//System.out.println("== Floor Subsystem receiving data << " + receivedFd + " >> from schedular");
 
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 			} 
 
 			this.scheduler.setMoreData(false);
@@ -46,7 +46,7 @@ public class FloorSubsystem implements Runnable {
 		}catch(IOException | InterruptedException e) {
 			System.err.println(e.getMessage());
 		}
-		System.out.println("Floor finished");
+		System.out.println("== Floor Subsystem finished");
 	}
 }
 

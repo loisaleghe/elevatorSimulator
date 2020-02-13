@@ -1,7 +1,12 @@
 package elevatorSimulator;
 
-public class Elevator implements Runnable {
-	
+
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @author 
+*/
+public class Elevator implements Runnable {	
 	 
 	//creates a queue to represent the elevator moving up 
 	private FloorQueue upQueue; 
@@ -22,6 +27,65 @@ public class Elevator implements Runnable {
 		 this.upQueue = new FloorQueue();
 		 this.downQueue = new FloorQueue();
 		 this.currFloor = new Floor(1);
+		 this.currDirection = Direction.IDLE;
+	}
+	
+	/*
+	 * @return returns the floor the elevator is currently at
+	 */
+	public Floor getCurrentFloor() {
+		return this.currFloor;
+	}
+	
+	public void setCurrentFloor(Floor currFloor) {
+		this.currFloor = currFloor;
+	}
+	
+	/*
+	 * @return returns the direction the elevator is currently moving
+	 */
+	public Direction getCurrentDirection() {
+		return this.currDirection;
+	}
+	
+	public void setCurrentDirection(Direction currDirection) {
+		this.currDirection = currDirection;
+	}
+	
+	/**
+	 * Modifies the elevator's direction based on the state of it's queues
+	 */
+	private void adjustElevatorDirection() {
+		if(this.upQueue.isEmpty() && this.downQueue.isEmpty())
+			this.currDirection = Direction.IDLE;
+		else if(this.upQueue.isEmpty())
+			this.currDirection = Direction.DOWN;
+		else if(this.downQueue.isEmpty())
+			this.currDirection = Direction.UP;
+	}
+	
+	/*
+	 * Sleeps for one second to open elevator door
+	 */
+	public void openElevatorDoor() {
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * Sleeps for one second to close elevator door
+	 */
+	public void closeElevatorDoor() {
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	 
 	/*
@@ -54,7 +118,7 @@ public class Elevator implements Runnable {
 	/*
 	 * dictates the movement of the elevator
 	 */
-	public void move () {
+	public void move() {
 		
 		//scenarios for the elevator moving up
 		if (currDirection.equals(Direction.UP)) {
