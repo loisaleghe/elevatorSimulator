@@ -22,13 +22,13 @@ public class SchedulerTest {
 		this.scheduler = null;
 	}
 
-	@Test
-	public void testSendAndFetchData() {
-		FloorData fd = new FloorData(new Time(System.currentTimeMillis()),5, Direction.UP, 8);
-		this.scheduler.sendData(fd);
-		FloorData newFloorData = this.scheduler.getData();
-		assertEquals("Floor data must be equal",fd, newFloorData);
-	}
+//	@Test
+//	public void testSendAndFetchData() {
+//		FloorData fd = new FloorData(new Time(System.currentTimeMillis()),5, Direction.UP, 8);
+//		this.scheduler.sendData(fd);
+//		FloorData newFloorData = this.scheduler.getData();
+//		assertEquals("Floor data must be equal",fd, newFloorData);
+//	}
 
 
 }
