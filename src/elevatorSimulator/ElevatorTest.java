@@ -74,7 +74,8 @@ class ElevatorTest {
 		elevator.addFloor(new Floor (3));
 		elevator.setCurrentDirection(Direction.UP);
 		elevator.move();
-		System.out.println(elevator.getCurrentFloor());
+		//need to fix this
+		System.out.println(elevator.getUpQueue().peek());
 	}
 	
 

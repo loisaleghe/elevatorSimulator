@@ -39,7 +39,7 @@ public class FloorQueue extends AbstractQueue<Floor> {
 	 */
 	@Override
 	public Floor poll() {
-		Floor fl = new Floor(this.floors.remove(this.floors.size() - 1));
+		Floor fl = new Floor(this.floors.remove(0));
 		return fl;
 	}
 
