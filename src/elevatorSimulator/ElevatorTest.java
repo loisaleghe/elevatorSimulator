@@ -27,19 +27,18 @@ class ElevatorTest {
 	void tearDown() throws Exception {
 	}
 
-	@Test
+	/*@Test
 	void test() {
 		fail("Not yet implemented");
-	}
+	}*/
 	
+	@Test
 	public void testAddFloorsToUpQueue() {
 		elevator.setCurrentFloor(new Floor (2));
 		elevator.addFloor(new Floor(4));
 		elevator.addFloor(new Floor(5));
 		elevator.addFloor(new Floor(3));
-		assertTrue(elevator.getUpQueue().peek() == new Floor(3));
-		
-		
+		assertTrue(elevator.getUpQueue().peek().equals(new Floor(3)));	
 	}
 
 }
