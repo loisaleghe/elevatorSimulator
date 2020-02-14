@@ -70,7 +70,7 @@ public class Scheduler implements Runnable {
 	 * Modified to return an arraylist of floordata. Iteration 2
 	 */
 	public synchronized ArrayList<FloorData> getData(Floor f) {
-		//		Wait if there is no floor data available
+		// Wait if there is no floor data available
 		ArrayList<FloorData> temp = new ArrayList<>();
 		while(!this.canGetData) {
 			try {
@@ -79,9 +79,14 @@ public class Scheduler implements Runnable {
 				e.printStackTrace();
 			}
 			
-			//To check for requests from the same floor, then populating the floorD arraylist with the floordata. Iteration 2
-			int fn = f.getNumber();
+			int fn;
 			
+			// If floor is null, get all requests that are the same as the first request
+			if(f == null) {
+				 fn = (this.floorData.get(0)).getFloor();		
+			} else { // else, get all requests that are same as the given floor
+				 fn = f.getNumber();
+			}			
 			
 			for(FloorData fd: this.floorData) {
 				if(fd.getFloor() == fn) {
