@@ -116,6 +116,13 @@ public class Elevator implements Runnable {
 	}
 	
 	/*
+	 * 
+	 */
+	public void pressButton(FloorData f) {
+		addFloor(new Floor(f.getCarButton()));
+	}
+	
+	/*
 	 * dictates the movement of the elevator
 	 */
 	public void move() {
