@@ -100,7 +100,7 @@ public class Elevator implements Runnable {
 	 * add floors to either the elevator going up or the elevator
 	 * going down
 	 */
-	public void addFloor(Floor f) {
+	private void addFloor(Floor f) {
 		
 		//gets the destination of the floor that is pressed 
 		int floorNumber = f.getNumber();
