@@ -4,7 +4,7 @@ package elevatorSimulator;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author 
+ * @author Ediomoabasi Emah
 */
 public class Elevator implements Runnable {	
 	 
@@ -28,6 +28,14 @@ public class Elevator implements Runnable {
 		 this.downQueue = new FloorQueue();
 		 this.currFloor = new Floor(1);
 		 this.currDirection = Direction.IDLE;
+	}
+	
+	public FloorQueue getUpQueue() {
+		return this.upQueue;
+	}
+	
+	public FloorQueue getDownQueue() {
+		return this.downQueue;
 	}
 	
 	/*
