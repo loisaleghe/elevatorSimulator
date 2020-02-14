@@ -38,7 +38,7 @@ class ElevatorTest {
 		elevator.addFloor(new Floor(4));
 		elevator.addFloor(new Floor(5));
 		elevator.addFloor(new Floor(3));
-		assertTrue(elevator.getUpQueue().peek().equals(new Floor(3)));	
+		assertTrue((elevator.getUpQueue().peek()).equals(new Floor(3)));	
 	}
 
 }
