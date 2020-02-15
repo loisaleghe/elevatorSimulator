@@ -2,7 +2,7 @@ package elevatorSimulator;
 
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+
 
 /**
  * @author Ediomoabasi Emah
@@ -109,7 +109,10 @@ public class Elevator extends Thread {
 			System.err.println(e.getMessage());
 		}
 	}
-
+    
+	/*
+	 * Sleeps for one second to stop elevator
+	 */
 	public void stopElevator() {
 		try {
 			System.out.println("== Elevator: Elevator stopped on floor " +  + this.currFloor.getNumber());

@@ -2,6 +2,7 @@ package elevatorSimulator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,10 +18,6 @@ class ElevatorTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		elevator = new Elevator();
-		/*
-		Floor currFloor = new Floor(1);
-		Direction currDirection = Direction.IDLE;
-		*/
 	}
 
 	@AfterEach
@@ -68,13 +65,43 @@ class ElevatorTest {
 		System.out.println(elevator.getDownQueue().size());
 	}
 	
+	/*
+	 * tests if the current floor of the elevator changes when the
+	 * elevator moves
+	 */
 	@Test
-	public void testMoveUp() {
+	public void testMove() {
+		elevator.setCurrentFloor(new Floor (3));
+		elevator.addFloor(new Floor(7));
+		elevator.setCurrentDirection(Direction.UP);
+		elevator.move();
+		assertTrue(elevator.getCurrentFloor().equals(new Floor (4)));
+	}
+	
+	/*
+	 * Checks if the elevator is empty after moving up to a
+	 * destination
+	 */
+	@Test
+	public void testMoveUpAFloor() {
 		elevator.setCurrentFloor(new Floor (2));
 		elevator.addFloor(new Floor (3));
 		elevator.setCurrentDirection(Direction.UP);
 		elevator.move();
 		assertTrue((elevator.getUpQueue().isEmpty()));
+	}
+	
+	/*
+	 * Checks if the elevator is empty after moving down to a 
+	 * destination
+	 */
+	@Test
+	public void testMoveDownAFloor() {
+		elevator.setCurrentFloor(new Floor (7));
+		elevator.addFloor(new Floor (6));
+		elevator.setCurrentDirection(Direction.DOWN);
+		elevator.move();
+		assertTrue((elevator.getDownQueue().isEmpty()));
 	}
 	
 
