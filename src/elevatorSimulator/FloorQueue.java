@@ -31,7 +31,10 @@ public class FloorQueue extends AbstractQueue<Floor> {
 	 */
 	@Override
 	public boolean offer(Floor fl) {
-		return this.floors.add(fl);
+		if(!this.floors.contains(fl)) 
+			return this.floors.add(fl);
+		
+		return false;
 	}
 
 	/**
@@ -60,6 +63,10 @@ public class FloorQueue extends AbstractQueue<Floor> {
 	@Override
 	public int size() {
 		return this.floors.size();
+	}
+	
+	public String toString() {
+		return this.floors.toString();
 	}
 
 }
