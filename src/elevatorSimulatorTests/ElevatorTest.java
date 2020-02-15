@@ -1,26 +1,42 @@
-package elevatorSimulator;
+/**
+ * 
+ */
+package elevatorSimulatorTests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import elevatorSimulator.Direction;
+import elevatorSimulator.Elevator;
+import elevatorSimulator.Floor;
 
 /**
- * @author Ediomoabasi Emah, Hilaire Djani
+ * @author djani
+ *
  */
-
-class ElevatorTest {
+public class ElevatorTest {
 
 	private Elevator elevator;
 
-	@BeforeEach
-	void setUp() throws Exception {
-		elevator = new Elevator();
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+		this.elevator = new Elevator();
 	}
 
-	@AfterEach
-	void tearDown() throws Exception {
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@After
+	public void tearDown() throws Exception {
+		this.elevator = null;
 	}
 
 	/*
@@ -58,8 +74,6 @@ class ElevatorTest {
 		elevator.addFloor(new Floor(7));
 		elevator.addFloor(new Floor(9));
 		elevator.addFloor(new Floor(4));
-		System.out.println(elevator.getUpQueue().size());
-		System.out.println(elevator.getDownQueue().size());
 	}
 
 	/*
@@ -183,5 +197,6 @@ class ElevatorTest {
 		elevator.move();
 		assertTrue((elevator.getDownQueue().size() == 3));
 	}
+
 
 }

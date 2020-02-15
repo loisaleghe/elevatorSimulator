@@ -1,4 +1,4 @@
-package elevatorSimulator;
+package elevatorSimulatorTests;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,8 @@ import java.sql.Time;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import elevatorSimulator.Scheduler;
 
 public class SchedulerTest {
 
