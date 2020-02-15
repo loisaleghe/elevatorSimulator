@@ -104,5 +104,64 @@ class ElevatorTest {
 		assertTrue((elevator.getDownQueue().isEmpty()));
 	}
 	
+	/*
+	 * Checks if the elevator's direction is DOWN when the 
+	 * elevator has completed moving to a higher destination
+	 */
+	@Test
+	public void testCurrentDirectionAfterElevatorGoingUp() {
+		elevator.setCurrentFloor(new Floor (4));
+		elevator.addFloor(new Floor (3));
+		elevator.addFloor(new Floor (5));
+		elevator.setCurrentDirection(Direction.UP);
+		elevator.move();
+		assertTrue((elevator.getCurrentDirection().equals(Direction.DOWN)));
+	}
+	
+	/*
+	 * Checks if the elevator's direction is UP when the elevator
+	 * has completed moving to a lower destination
+	 */
+	@Test
+	public void testCurrentDirectionAfterElevatorGoingDown() {
+		elevator.setCurrentFloor(new Floor (4));
+		elevator.addFloor(new Floor (3));
+		elevator.addFloor(new Floor (5));
+		elevator.setCurrentDirection(Direction.DOWN);
+		elevator.move();
+		assertTrue((elevator.getCurrentDirection().equals(Direction.UP)));
+	}
+	
+	/*
+	 * Tests to see if when an elevator moves up considering there are 
+	 * multiple destinations, there are still more destinations for it to visit
+	 */
+	@Test
+	public void testMoveUpMultipleDestinations() {
+		elevator.setCurrentFloor(new Floor (3));
+		elevator.addFloor(new Floor (4));
+		elevator.addFloor(new Floor (6));
+		elevator.addFloor(new Floor (7));
+		elevator.setCurrentDirection(Direction.UP);
+		elevator.move();
+		assertTrue((elevator.getUpQueue().size() == 2));
+	}
+	
+	/*
+	 * Tests to see if when an elevator moves down considering there are 
+	 * multiple destinations, there are still more destinations for it to visit
+	 */
+	@Test
+	public void testMoveDownMultipleDestinations() {
+		elevator.setCurrentFloor(new Floor (8));
+		elevator.addFloor(new Floor (4));
+		elevator.addFloor(new Floor (6));
+		elevator.addFloor(new Floor (7));
+		elevator.addFloor(new Floor (3));
+		elevator.setCurrentDirection(Direction.DOWN);
+		elevator.move();
+		assertTrue((elevator.getDownQueue().size() == 3));
+	}
+	
 
 }
