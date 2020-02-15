@@ -16,7 +16,7 @@ import elevatorSimulator.Elevator;
 import elevatorSimulator.Floor;
 
 /**
- * @author djani
+ * @author Ediomoabasi Emah
  *
  */
 public class ElevatorTest {
