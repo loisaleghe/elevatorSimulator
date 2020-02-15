@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author abdul-rahmaanrufai
+ * @author abdul-rahmaanrufai, Ediomoabasi Emah
  *
  */
 public class FloorDataTest {
