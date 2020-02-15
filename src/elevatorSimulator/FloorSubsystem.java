@@ -20,7 +20,7 @@ public class FloorSubsystem implements Runnable {
 
 	@Override
 	public void run() {
-		while(true && this.moreData) {
+		while(this.moreData) {
 			try {
 				//	Read floor data values from file
 				BufferedReader br = new BufferedReader(new FileReader("floorRequests.txt")); 
@@ -47,6 +47,7 @@ public class FloorSubsystem implements Runnable {
 				System.err.println(e.getMessage());
 			}
 		}
+		System.out.println("== Floor subsystem: Finished!");
 	}
 }
 

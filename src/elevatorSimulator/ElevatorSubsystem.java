@@ -10,6 +10,7 @@ public class ElevatorSubsystem extends Thread {
 
 	private Elevator availableElevator = null; // This represents an elevator that is currently available on a given floor
 	private boolean elevatorPresent = false; // Specifies whether the available elevator can be changed
+	private boolean stopSystem = false;
 
 	private ArrayList <Elevator> elevators; //elevators would contain an arraylist of elevators
 
@@ -26,6 +27,14 @@ public class ElevatorSubsystem extends Thread {
 		for(int i = 0; i < elevatorSize; i++) {
 			this.elevators.add(new Elevator(this));
 		}
+	}
+
+	public void stopSystem(boolean stopSystem) {
+		this.stopSystem = stopSystem;
+	}
+
+	public boolean systemStopped() {
+		return this.stopSystem;
 	}
 
 	/**
@@ -62,45 +71,57 @@ public class ElevatorSubsystem extends Thread {
 
 	@Override
 	public void run() {
+		//		Repeat until system is stopped. System is stop when there is no more data to read and elevator visited all of it's floors
 		while(true) {
-			try {
+			try {				
 				// Wait until there is an elevator available
 				while(!this.elevatorPresent) {
 					Thread.sleep(1000);
-				}
+				} 
 
-				Floor currentFloor;
-				Direction availableElevatorDirection = this.availableElevator.getCurrentDirection();
-				
-				if(this.availableElevator.getCurrentDirection().equals(Direction.IDLE)) {
-					currentFloor = null;
-				} else {
-					currentFloor = this.availableElevator.getCurrentFloor();
-				}
+				if(this.scheduler.getMoreData() || this.scheduler.moreFloorRequests()) {
 
-				// Get floor data from scheduler and instruct elevator to move
-				System.out.println("== Elevator subsystem: Fetching floor requests from schedular");
-				ArrayList<Floor> requestedFloors = this.scheduler.getData(currentFloor);
+					Floor currentFloor;
+					Direction availableElevatorDirection = this.availableElevator.getCurrentDirection();
 
-				// If there are requested floors, signal elevator to stop
-				if(!requestedFloors.isEmpty()) {
-					System.out.println("== Elevator subsystem: Floor requests received " + requestedFloors);
-					if(availableElevatorDirection.equals(Direction.IDLE)) {
-						this.availableElevator.addFloors(requestedFloors);
+					if(this.availableElevator.getCurrentDirection().equals(Direction.IDLE)) {
+						currentFloor = null;
 					} else {
-						this.availableElevator.stopElevator();  // Stop elevator if moving
-						if(!this.availableElevator.isDoorOpen()) // Open elevator door if not open
-							this.availableElevator.openElevatorDoor();
-						
-						this.availableElevator.pressButton(requestedFloors);
-						this.availableElevator.closeElevatorDoor();
+						currentFloor = this.availableElevator.getCurrentFloor();
+					}
+
+					// Get floor data from scheduler and instruct elevator to move
+					System.out.println("== Elevator subsystem: Fetching floor requests from schedular");
+					ArrayList<Floor> requestedFloors = this.scheduler.getData(currentFloor);
+
+					if(!requestedFloors.isEmpty()) { // If there are requested floors, signal elevator to stop or move in a specific direction
+						System.out.println("== Elevator subsystem: Floor requests received " + requestedFloors);
+
+						// If elevator is idle, notify the elevator to move in direction of request
+						if(availableElevatorDirection.equals(Direction.IDLE)) {
+							if(this.availableElevator.isDoorOpen()) // Close elevator door if open
+								this.availableElevator.closeElevatorDoor();
+
+							this.availableElevator.setCurrentDirection(requestedFloors.get(0).getNumber() > this.availableElevator.getCurrentFloor().getNumber() ? Direction.UP : Direction.DOWN);
+							this.availableElevator.addFloors(requestedFloors);
+							System.out.println("== Elevator subsystem: Instructing idle elevator to move " + this.availableElevator.getCurrentDirection());
+						} else {
+							this.availableElevator.stopElevator();  // Stop elevator if moving
+							if(!this.availableElevator.isDoorOpen()) // Open elevator door if not open
+								this.availableElevator.openElevatorDoor();
+
+							this.availableElevator.pressButton(requestedFloors);
+							this.availableElevator.closeElevatorDoor();
+						}
+					} else {
+						System.out.println("== Elevator subsystem: No floor requests on this floor");
+						if(this.availableElevator.isDoorOpen() && currentFloor != null) // Open elevator door if not open
+							this.availableElevator.closeElevatorDoor();;
 					}
 				} else {
-					System.out.println("== Elevator subsystem: No floor requests on this floor");
-					if(this.availableElevator.isDoorOpen() && currentFloor != null) // Open elevator door if not open
-						this.availableElevator.closeElevatorDoor();;
+					this.stopSystem = true;
 				}
-				
+
 				this.availableElevator.move();
 
 				this.elevatorPresent = false;

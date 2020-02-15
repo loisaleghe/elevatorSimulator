@@ -38,6 +38,10 @@ public class Scheduler implements Runnable {
 	public void setMoreData(boolean moreData) {
 		this.moreData = moreData;
 	}
+	
+	public boolean moreFloorRequests() {
+		return !this.floorData.isEmpty();
+	}
 
 
 	/*
