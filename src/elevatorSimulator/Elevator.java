@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Ediomoabasi Emah
+ * @author Ediomoabasi Emah, Hilaire Djani
  */
 public class Elevator extends Thread {	
 
@@ -79,7 +79,7 @@ public class Elevator extends Thread {
 	public void setCurrentDirection(Direction currDirection) {
 		this.currDirection = currDirection;
 	}
-	
+
 	public boolean isDoorOpen() {
 		return this.isDoorOpen;
 	}
@@ -161,7 +161,7 @@ public class Elevator extends Thread {
 		// Reset elevator direction
 		this.adjustElevatorDirection();
 	}
-	
+
 	public void addFloors(ArrayList<Floor> floors) {
 		for(Floor fl: floors)
 			this.addFloor(fl);
@@ -208,7 +208,7 @@ public class Elevator extends Thread {
 
 			//removes the floor from the queue if the current floor is the same
 			//as the floor at that specific index
-			 if (currFloor.getNumber() == downQueue.peek().getNumber()) {
+			if (currFloor.getNumber() == downQueue.peek().getNumber()) {
 				this.stopElevator();
 				this.openElevatorDoor();
 				downQueue.poll();
@@ -221,8 +221,9 @@ public class Elevator extends Thread {
 
 	@Override
 	public void run() {
-		while(true) {
-			//			Send signal to elevator subsystem about elevator movement
+		//		Continue running until all floors are visited and there are no more requests
+		while(!this.upQueue.isEmpty() || !this.downQueue.isEmpty() || !this.elevatorSubsytem.systemStopped()) {
+			//	Send signal to elevator subsystem about elevator movement
 			System.out.println("== Elevator: Signaling Elevator subsystem");
 			this.elevatorSubsytem.receiveElevatorSignal(this);
 
@@ -233,6 +234,7 @@ public class Elevator extends Thread {
 				System.err.println(e.getMessage());
 			}
 		}
+		System.out.println("== Elevator: Finished!");
 
 	}
 

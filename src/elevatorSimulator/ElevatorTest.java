@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * @author Ediomoabasi Emah
+ * @author Ediomoabasi Emah, Hilaire Djani
 */
 
 class ElevatorTest {
@@ -75,6 +75,30 @@ class ElevatorTest {
 		elevator.setCurrentDirection(Direction.UP);
 		elevator.move();
 		assertTrue((elevator.getUpQueue().isEmpty()));
+	}
+	
+	/**
+	 * Test that the elevator opens its door once it moves up to a floor it needs to visit
+	 */
+	@Test
+	public void testMoveUpAndOpenDoor() {
+		this.elevator.setCurrentFloor(new Floor(1));
+		this.elevator.setCurrentDirection(Direction.UP);
+		this.elevator.addFloor(new Floor(2));
+		this.elevator.move();
+		assertTrue(this.elevator.isDoorOpen());
+	}
+	
+	/**
+	 * Test that the elevator opens its door once it moves down to a floor it needs to visit
+	 */
+	@Test
+	public void testMoveDownAndOpenDoor() {
+		this.elevator.setCurrentFloor(new Floor(3));
+		this.elevator.setCurrentDirection(Direction.DOWN);
+		this.elevator.addFloor(new Floor(2));
+		this.elevator.move();
+		assertTrue(this.elevator.isDoorOpen());
 	}
 	
 
