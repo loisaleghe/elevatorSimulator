@@ -39,8 +39,11 @@ public class FloorDataTest {
 		fd = null;
 	}
 
+	/*
+	 * Tests that the floorData read from the file is not null 
+	 */
 	@Test
-	public void test() throws IOException {
+	public void testFloorRequestTxtIsNotNull() throws IOException {
 		String f; 
 		f = br.readLine();
 		fd = new FloorData(FloorData.parseString(f));
