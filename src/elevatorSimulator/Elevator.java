@@ -2,7 +2,7 @@ package elevatorSimulator;
 
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+
 
 /**
  * @author Ediomoabasi Emah, Hilaire Djani
@@ -53,7 +53,7 @@ public class Elevator extends Thread {
 	public FloorQueue getCurrentQueue() {
 		if(this.currDirection.equals(Direction.UP))
 			return this.upQueue;
-		else if(this.currDirection.equals(Direction.UP))
+		else if(this.currDirection.equals(Direction.DOWN))
 			return this.downQueue;
 		else return null;
 	} 
@@ -109,7 +109,10 @@ public class Elevator extends Thread {
 			System.err.println(e.getMessage());
 		}
 	}
-
+    
+	/*
+	 * Sleeps for one second to stop elevator
+	 */
 	public void stopElevator() {
 		try {
 			System.out.println("== Elevator: Elevator stopped on floor " +  + this.currFloor.getNumber());
