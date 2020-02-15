@@ -116,6 +116,7 @@ class ElevatorTest {
 		elevator.setCurrentDirection(Direction.UP);
 		elevator.move();
 		assertTrue((elevator.getCurrentDirection().equals(Direction.DOWN)));
+		assertFalse((elevator.getCurrentDirection().equals(Direction.UP)));
 	}
 	
 	/*
@@ -130,6 +131,7 @@ class ElevatorTest {
 		elevator.setCurrentDirection(Direction.DOWN);
 		elevator.move();
 		assertTrue((elevator.getCurrentDirection().equals(Direction.UP)));
+		assertFalse((elevator.getCurrentDirection().equals(Direction.DOWN)));
 	}
 	
 	/*
