@@ -83,7 +83,7 @@ Flow
 Test Set-Up Instruction
 ****************************
 
-* To run the test cases, Open Eclipse and run the AllTests.java class.
+* To run the test cases, Open Eclipse and run the AllTests class found in the "elevatorSimulatorTests" package.
 * All tests should pass.
 
 

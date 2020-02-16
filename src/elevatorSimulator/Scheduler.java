@@ -59,7 +59,7 @@ public class Scheduler extends Thread {
 			}
 		}
 
-		System.out.println("== Schedular: Receiving request on floor " + fl.getFloor());
+		System.out.println("== Schedular: Received request on floor " + fl.getFloor());
 		//this.floorData = new FloorData(fl);
 		this.floorData.add(fl);				//Populating floor data arraylist with floordata then sending it to the elevator subsystem. Iteration 2
 		this.canGetData = true;
@@ -120,6 +120,7 @@ public class Scheduler extends Thread {
 
 		notifyAll();
 
+		System.out.println("== Schedular: Sending floor requests to Elevator subsystem " + temp);
 		return temp;
 	}
 

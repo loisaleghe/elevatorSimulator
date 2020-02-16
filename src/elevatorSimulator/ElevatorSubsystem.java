@@ -87,6 +87,7 @@ public class ElevatorSubsystem extends Thread {
 					Thread.sleep(1000);
 				} 
 
+				// If there is more data being read or there are more floor requests
 				if(this.scheduler.getMoreData() || this.scheduler.moreFloorRequests()) {
 
 					Floor currentFloor;
