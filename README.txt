@@ -1,6 +1,8 @@
 SYSC 3330 A3 - Group 9
 *****************************
 
+LINK TO REPOSITORY: https://github.com/loisaleghe/elevatorSimulator
+
 Group Members
 ***********************
 * Abdul-Rahmaan Rufai
@@ -26,6 +28,18 @@ Classes
 
 * Scheduler  
    It acts as a server. It ensures the communication between the clients, which are the Elevator Subsystem and the Floor Subsystem.
+   
+* Elevator 
+   It represents the elevators in the system
+   
+* Floor
+   It represents the floor in the system
+   
+* FloorQueue
+   It stores and manages an array list of floors that an elevator will visit
+
+
+	
 
 Other Files and Folders:
 *************************
@@ -63,3 +77,5 @@ Test Set-Up Instruction
 
 * To run the test cases, Open Eclipse and run the AllTests.java class.
 * All tests should pass.
+
+
