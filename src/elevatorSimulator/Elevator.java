@@ -21,10 +21,14 @@ public class Elevator extends Thread {
 	//specifies the direction the elevator is moving
 	private Direction currDirection;
 
+	//	Specifies the current state of the elevator doors, i.e true for open, false for closed
 	private boolean isDoorOpen;
 
 	private ElevatorSubsystem elevatorSubsytem; // Represents the elevator subsystem controlling this elevator
 
+	/**
+	 * Creates a new elevator thread
+	 */
 	public Elevator() {
 		super("Elevator thread");
 		this.upQueue = new FloorQueue();
@@ -34,22 +38,36 @@ public class Elevator extends Thread {
 		this.isDoorOpen = false;
 	}
 
-	/*
+	/**
 	 * The creates a new elevator and assigns the specified subsystem to control it
+	 * @param elevatorSubsytem, an ElevatorSubsytem, specifies the ElevatorSubsytem that will be controlling this elevator
 	 */
 	public Elevator (ElevatorSubsystem elevatorSubsytem) {
 		this();
 		this.elevatorSubsytem = elevatorSubsytem;
 	}
 
+	/**
+	 * Fetches the queue of floors that this elevator has to visit while going upwards
+	 * @return a FloorQueue representing the floors this elevator has to visit up
+	 */
 	public FloorQueue getUpQueue() {
 		return this.upQueue;
 	}
 
+	/**
+	 * Fetches the queue of floors that this elevator has to visit while going downwards
+	 * @return a FloorQueue representing the floors this elevator has to visit down
+	 */
 	public FloorQueue getDownQueue() {
 		return this.downQueue;
 	}
 
+	/**
+	 * Fetches the queue that this elevator is currently visiting
+	 * @return a FloorQueue, upQueue if the elevator is going up and downQueue if it is going down
+	 * This method returns null if the elevator is currently idle
+	 */
 	public FloorQueue getCurrentQueue() {
 		if(this.currDirection.equals(Direction.UP))
 			return this.upQueue;
@@ -58,28 +76,42 @@ public class Elevator extends Thread {
 		else return null;
 	} 
 
-	/*
-	 * @return returns the floor the elevator is currently at
+	/**
+	 * Fetches the floor on which this elevator is currently
+	 * @return a Floor, representing the floor on which this elevator currently is
 	 */
 	public Floor getCurrentFloor() {
 		return this.currFloor;
 	}
 
+	/**
+	 * Sets the current floor on which this elevator will be
+	 * @param currFloor, a Floor, represents the floor on which this elevator will be
+	 */
 	public void setCurrentFloor(Floor currFloor) {
 		this.currFloor = currFloor;
 	}
 
-	/*
-	 * @return returns the direction the elevator is currently moving
+	/**
+	 * Fetches the current direction for this elevator
+	 * @return a Direction enum, representing on the current direction of this elevator
 	 */
 	public Direction getCurrentDirection() {
 		return this.currDirection;
 	}
 
+	/**
+	 * Sets the current direction for this elevator
+	 * @param currDirection, a DIrection enum, representing the new direction for this elevator
+	 */
 	public void setCurrentDirection(Direction currDirection) {
 		this.currDirection = currDirection;
 	}
 
+	/**
+	 * Specifies the current status of this elevator's door
+	 * @return a boolean, true if this elevator's door is currently open, false otherwise
+	 */
 	public boolean isDoorOpen() {
 		return this.isDoorOpen;
 	}
@@ -96,8 +128,9 @@ public class Elevator extends Thread {
 			this.currDirection = Direction.UP;
 	}
 
-	/*
-	 * Sleeps for one second to open elevator door
+	/**
+	 * Opens the door for this elevator
+	 * Simulates door opening by sleeping for a short period of time
 	 */
 	public void openElevatorDoor() {
 		try {
@@ -109,9 +142,10 @@ public class Elevator extends Thread {
 			System.err.println(e.getMessage());
 		}
 	}
-    
-	/*
-	 * Sleeps for one second to stop elevator
+
+	/**
+	 * Instructs this elevator to stop moving
+	 * Simulates elevator stopping by sleeping for a short period of time
 	 */
 	public void stopElevator() {
 		try {
@@ -123,8 +157,9 @@ public class Elevator extends Thread {
 		}
 	}
 
-	/*
-	 * Sleeps for one second to close elevator door
+	/**
+	 * Closes the door for this elevator
+	 * Simulates door closing by sleeping for a short period of time
 	 */
 	public void closeElevatorDoor() {
 		try {
@@ -137,9 +172,9 @@ public class Elevator extends Thread {
 		}
 	}
 
-	/*
-	 * add floors to either the elevator going up or the elevator
-	 * going down
+	/**
+	 * Adds specified floor to appropriate elevator queue, based on elevator's current direction
+	 * @param f, a Floor, represents the floor to add to the elevator's queues
 	 */
 	public void addFloor(Floor f) {
 		System.out.println("== Elevator: Adding " + f);
@@ -165,13 +200,19 @@ public class Elevator extends Thread {
 		this.adjustElevatorDirection();
 	}
 
+	/**
+	 * Adds several floors to the elevator's queues
+	 * @param floors, an Arraylist of floors, represents the floors to add to the elevator's queues
+	 */
 	public void addFloors(ArrayList<Floor> floors) {
 		for(Floor fl: floors)
 			this.addFloor(fl);
 	}
 
-	/*
-	 * 
+	/**
+	 * Simulates pressing a floor destination button in the elevator
+	 * Adds the floors specified to the elevator's floor queues
+	 * @param floors
 	 */
 	public void pressButton(ArrayList<Floor> floors) {
 		// Add floors to elevator queue
@@ -181,8 +222,8 @@ public class Elevator extends Thread {
 		}
 	}
 
-	/*
-	 * dictates the movement of the elevator
+	/**
+	 * Movies elevator one floor, either up or down depending on it's current direction
 	 */
 	public void move() {
 		//scenarios for the elevator moving up

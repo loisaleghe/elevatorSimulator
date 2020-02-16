@@ -10,7 +10,7 @@ public class ElevatorSubsystem extends Thread {
 
 	private Elevator availableElevator = null; // This represents an elevator that is currently available on a given floor
 	private boolean elevatorPresent = false; // Specifies whether the available elevator can be changed
-	private boolean stopSystem = false;
+	private boolean stopSystem = false; // Specifies whether to stop the system from running
 
 	private ArrayList <Elevator> elevators; //elevators would contain an arraylist of elevators
 
@@ -29,10 +29,18 @@ public class ElevatorSubsystem extends Thread {
 		}
 	}
 
+	/**
+	 * Stops the system from running
+	 * @param stopSystem
+	 */
 	public void stopSystem(boolean stopSystem) {
 		this.stopSystem = stopSystem;
 	}
 
+	/**
+	 * Specifies the current running state of the system, i.e. whether it is stopped or not
+	 * @return a boolean, true if the system is currently stopped, false otherwise
+	 */
 	public boolean systemStopped() {
 		return this.stopSystem;
 	}

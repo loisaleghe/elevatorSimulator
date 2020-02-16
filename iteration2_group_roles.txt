@@ -1,0 +1,32 @@
+Group Contributions for Iteration 2
+***************************
+
+Lois Aleghe:
+	• README file
+	• UML diagram
+	• Group Roles
+	• ElevatorSubsystem
+	• Floor
+
+Hilaire Djani:
+	• Elevator
+	• FloorQueue
+	• Schedular
+	• ElevatorSubsystem
+	• ElevatorTest
+	
+Ediomoabasi Emah:
+	• Elevator
+	• FloorQueue
+	• ElevatorTest
+	• FloorDataTest
+
+Abdul-Rahmaan Rufai:
+	• Schedular
+	• FloorDataTest
+
+Mohammed-Yasir Suara:
+	• Elevator
+	• Direction
+	• State Machine Diagram
+	• SchedularTest

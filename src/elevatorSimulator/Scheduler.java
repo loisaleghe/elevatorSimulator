@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * The scheduler class represents the server in the system
  */
 
-public class Scheduler implements Runnable {
+public class Scheduler extends Thread {
 
 	//creates an object of type floorData
 	//private FloorData floorData;
@@ -24,6 +24,7 @@ public class Scheduler implements Runnable {
 	 * of the scheduler
 	 */
 	public Scheduler() {
+		super("Schedular");
 		//this.floorData = null;
 		this.canGetData = false;
 		this.canSendData = true;
@@ -133,11 +134,10 @@ public class Scheduler implements Runnable {
 		//I added an elevator size to the scheduler
 
 		Scheduler scheduler = new Scheduler();
-		Thread schedulerSubsystem = new Thread(scheduler, "Scheduler");
-		Thread floorSubsystem = new Thread(new FloorSubsystem(scheduler), "Floor Subsystem");
+		Thread floorSubsystem = new FloorSubsystem(scheduler);
 		ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(scheduler, 1);
 
-		schedulerSubsystem.start();
+		scheduler.start();
 		elevatorSubsystem.start();
 		floorSubsystem.start();
 

@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class FloorSubsystem implements Runnable {
+public class FloorSubsystem extends Thread {
 
 	private Scheduler scheduler; // This represents the scheduler that this floor subsystem will use to fetch ang send data
 	private boolean moreData;
@@ -14,6 +14,7 @@ public class FloorSubsystem implements Runnable {
 	 * @param scheduler, a scheduler, represents the scheduler through which this floor subsystem communicates
 	 */
 	public FloorSubsystem(Scheduler scheduler) {
+		super("Floor Subsystem");
 		this.scheduler = scheduler;
 		this.moreData = true;
 	}
