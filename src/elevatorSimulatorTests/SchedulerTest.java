@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import elevatorSimulator.Scheduler;
 
-public class SchedulerTest {
+public class cd {
 
 	private Scheduler scheduler;
 
