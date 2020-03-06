@@ -1,5 +1,7 @@
 package elevatorSimulator;
 
+import java.net.DatagramSocket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 /*
@@ -15,6 +17,10 @@ public class Scheduler extends Thread {
 	private ArrayList<Elevator> elevators;	// List of elevators
 	private boolean canSendData;
 	private boolean canGetData;
+	private DatagramSocket sendSocket; //socket to send from the scheduler
+	private DatagramSocket fsReceive; //socket to receive from the floor subsystem
+	private DatagramSocket esReceive; //socket to receive from the elevator subsystem
+	
 
 	//the scheduler stops when moreData is false
 	private boolean moreData;
@@ -31,6 +37,25 @@ public class Scheduler extends Thread {
 		this.moreData = true;
 		this.floorData = new ArrayList<>();	
 		this.elevators = new ArrayList<>();
+		try {
+			this.sendSocket = new DatagramSocket(30); //sending to elevatorSubsystem
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			this.fsReceive = new DatagramSocket(10); //receiving from floorSubsystem
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			this.esReceive  = new DatagramSocket(20); //receiving from elevatorSubsystem
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public boolean getMoreData() {
@@ -144,14 +169,14 @@ public class Scheduler extends Thread {
 		//I added an elevator size to the scheduler
 
 		Scheduler scheduler = new Scheduler();
-		Thread floorSubsystem = new FloorSubsystem(scheduler);
-		ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(scheduler);
+//		Thread floorSubsystem = new FloorSubsystem(scheduler);
+//		ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(scheduler);
 		
-		scheduler.addElevator(elevatorSubsystem.getElevator());
+//		scheduler.addElevator(elevatorSubsystem.getElevator());
 
 		scheduler.start();
-		elevatorSubsystem.start();
-		floorSubsystem.start();
+//		elevatorSubsystem.start();
+//		floorSubsystem.start();
 
 	}
 }
