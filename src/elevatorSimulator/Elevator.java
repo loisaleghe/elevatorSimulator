@@ -267,9 +267,10 @@ public class Elevator extends Thread {
 	public void run() {
 		//		Continue running until all floors are visited and there are no more requests
 		while(!this.upQueue.isEmpty() || !this.downQueue.isEmpty() || !this.elevatorSubsytem.systemStopped()) {
-			//	Send signal to elevator subsystem about elevator movement
-			System.out.println("== Elevator: Signaling Elevator subsystem");
-			this.elevatorSubsytem.receiveElevatorSignal(this);
+			//	Notify scheduler about elevator movement through elevator subsystem
+			System.out.println("== Elevator: Signaling Schedular through Elevator subsystem");
+			this.elevatorSubsytem.notifySchedular();
+			//			this.elevatorSubsytem.receiveElevatorSignal(this);
 
 			try {
 				Thread.sleep(1000);

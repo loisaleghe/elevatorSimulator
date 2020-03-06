@@ -11,8 +11,8 @@ public class Scheduler extends Thread {
 	//creates an object of type floorData
 	//private FloorData floorData;
 
-	private ArrayList<FloorData> floorData ;		//Arraylist containing floor data from requests from the same floor. Iteration 2
-
+	private ArrayList<FloorData> floorData ;	//	Arraylist containing floor data from requests from the same floor. Iteration 2
+	private ArrayList<Elevator> elevators;	// List of elevators
 	private boolean canSendData;
 	private boolean canGetData;
 
@@ -29,7 +29,8 @@ public class Scheduler extends Thread {
 		this.canGetData = false;
 		this.canSendData = true;
 		this.moreData = true;
-		this.floorData = new ArrayList<>();				//Iteration 2
+		this.floorData = new ArrayList<>();	
+		this.elevators = new ArrayList<>();
 	}
 
 	public boolean getMoreData() {
@@ -42,6 +43,14 @@ public class Scheduler extends Thread {
 	
 	public boolean moreFloorRequests() {
 		return !this.floorData.isEmpty();
+	}
+	
+	/**
+	 * Adds the specified elevator to the list of elevators handled by this scheduler
+	 * @param e an Elevator, represents the elevator to be added to the list of elevators handled by this schedular
+	 */
+	public void addElevator(Elevator e) {
+		this.elevators.add(e);
 	}
 
 
@@ -136,7 +145,9 @@ public class Scheduler extends Thread {
 
 		Scheduler scheduler = new Scheduler();
 		Thread floorSubsystem = new FloorSubsystem(scheduler);
-		ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(scheduler, 1);
+		ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(scheduler);
+		
+		scheduler.addElevator(elevatorSubsystem.getElevator());
 
 		scheduler.start();
 		elevatorSubsystem.start();
