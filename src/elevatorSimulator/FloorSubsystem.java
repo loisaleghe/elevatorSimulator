@@ -57,7 +57,7 @@ public class FloorSubsystem extends Thread {
 	 * method that sends the converted FloorData to the Scheduler
 	 */
 	public void sendData(FloorData x) {
-		byte [] msg = FloorData.convertToArray(x);
+		byte [] msg = FloorData.convertToByteArray(x);
 		try {
 			sPacket = new DatagramPacket (msg, msg.length, InetAddress.getLocalHost(), 10);
 			//send the packet			

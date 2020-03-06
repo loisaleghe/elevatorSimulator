@@ -110,7 +110,7 @@ public class FloorData {
 
 	}
 	
-	public static byte[] convertToArray(FloorData x) {
+	public static byte[] convertToByteArray(FloorData x) {
 		byte [] fdata = null;
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
