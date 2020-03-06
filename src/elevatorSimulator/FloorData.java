@@ -2,6 +2,7 @@ package elevatorSimulator;
 
 import java.sql.Time;
 import java.util.Scanner;
+import java.io.*;
 
 public class FloorData {
 	/**
@@ -107,6 +108,22 @@ public class FloorData {
 		
 		return this.floor == floorData.floor && this.carButton == floorData.carButton && floorButton.equals(floorData.floorButton) && time.equals(floorData.time);
 
+	}
+	
+	public static byte[] convertToArray(FloorData x) {
+		byte [] fdata = null;
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			oos.flush();
+			oos.writeObject(x);
+			fdata = baos.toByteArray();
+			//return fdata;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return fdata;
 	}
 
 }
