@@ -1,7 +1,7 @@
 /**
  * 
  */
-package elevatorSimulator;
+package elevatorSimulatorTests;
 
 import static org.junit.Assert.*;
 
@@ -13,8 +13,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import elevatorSimulator.FloorData;
+
 /**
- * @author abdul-rahmaanrufai
+ * @author abdul-rahmaanrufai, Ediomoabasi Emah
  *
  */
 public class FloorDataTest {
@@ -39,8 +41,11 @@ public class FloorDataTest {
 		fd = null;
 	}
 
+	/*
+	 * Tests that the floorData read from the file is not null 
+	 */
 	@Test
-	public void test() throws IOException {
+	public void testFloorRequestTxtIsNotNull() throws IOException {
 		String f; 
 		f = br.readLine();
 		fd = new FloorData(FloorData.parseString(f));
