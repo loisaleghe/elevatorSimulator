@@ -1,5 +1,11 @@
 package elevatorSimulator;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class ElevatorSubsystem extends Thread {
@@ -7,6 +13,20 @@ public class ElevatorSubsystem extends Thread {
 	private Scheduler scheduler; //Scheduler object to interact with the elevator subsystem to get data
 
 	private Elevator elevator; // The elevator that this Elevator Subsystem controls
+	
+	private DatagramPacket sendPacket;
+
+	private DatagramPacket receivePacket;
+	
+	private DatagramSocket sendSocket; // socket that sends floor requests to the Scheduler
+	
+	private DatagramSocket receiveSocket; // socket to receive packets from the Scheduler
+	
+	private ArrayList<Integer> floorReq; 
+	
+	private byte[] array;
+
+	
 
 	//	private int elevatorSize; //elevatorSize contains the number of elevators
 
@@ -30,6 +50,14 @@ public class ElevatorSubsystem extends Thread {
 		//		for(int i = 0; i < elevatorSize; i++) {
 		//			this.elevators.add(new Elevator(this));
 		//		}
+		
+		try {
+			sendSocket = new DatagramSocket();
+			receiveSocket = new DatagramSocket(30);
+		}catch (SocketException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	/**
@@ -135,11 +163,78 @@ public class ElevatorSubsystem extends Thread {
 
 		this.elevator.move();
 	}
+	
+	/*
+	 * @param fd: creates a FloorData object
+	 * @return returns an arraylist of destination floors that have beemn requested
+	 */
+	public ArrayList<Integer> floorRequest(FloorData fd) {
+        floorReq.add(fd.getCarButton());
+		return floorReq;
+	}
+	/*
+	 * @return returns an array of byte
+	 * converts the Arraylist of Floor request integer to an array of bytes
+	 */
+	public byte[] toArray () {
+		for (int i = 0; i < floorReq.size(); i++) {
+			array[i] = (byte) (int) floorReq.get(i);
+		}
+		return array;
+	}
 
 	@Override
 	public void run() {
 		//		Repeat until system is stopped. System is stop when there is no more data to read and elevator visited all of it's floors
 		while(!this.stopSystem) {
+			
+			System.out.println("Elevator Subsystem: sending a packet that contains:\n" + floorReq);
+			
+			try {
+				sendPacket = new DatagramPacket(array,array.length,InetAddress.getLocalHost(),20);
+			}catch(UnknownHostException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+			System.out.println("Elevator Subsytem: Sending the packet to the Scheduler:");
+		    System.out.println("To host: " + sendPacket.getAddress());
+		    System.out.println("Destination host port: " + sendPacket.getPort());
+		    int len = sendPacket.getLength();
+		    System.out.println("Length: " + len);
+		    System.out.print("Containing String: ");
+		    System.out.println(new String(sendPacket.getData(),0,len));
+		    
+		    try {
+		         sendSocket.send(sendPacket);
+		    } catch (IOException e) {
+		         e.printStackTrace();
+		         System.exit(1);
+		    }
+		    
+		    //creates a byte array with a length of 100 bytes
+		    byte data[] = new byte[100];
+		    receivePacket = new DatagramPacket (data,data.length);
+		    
+		    try {  
+		         receiveSocket.receive(receivePacket);
+		    } catch(IOException e) {
+		         e.printStackTrace();
+		         System.exit(1);
+		    }
+		    
+		    System.out.println("Elevator Subsystem: Packet received:");
+		    System.out.println("From host: " + receivePacket.getAddress());
+		    System.out.println("Host port: " + receivePacket.getPort());
+		    int len1 = receivePacket.getLength();
+		    System.out.println("Length: " + len1);
+		    System.out.print("Containing: ");
+
+		    String received = new String(data,0,len1);   
+		    System.out.println(received);
+
+		      // We're finished, so close the socket.
+		    sendSocket.close();
+		    receiveSocket.close();
 			//			try {				
 			//				// Wait until there is an elevator available
 			//				while(!this.elevatorPresent) {

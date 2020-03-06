@@ -1,13 +1,14 @@
 package elevatorSimulator;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.*;
 
 public class FloorSubsystem extends Thread {
 
 	private Scheduler scheduler; // This represents the scheduler that this floor subsystem will use to fetch ang send data
 	private boolean moreData;
+	private DatagramPacket sPacket;
+	private DatagramSocket srSocket;
 
 	/**
 	 * Generates a new floor subsystem that communicates using the specified scheduler
@@ -49,6 +50,29 @@ public class FloorSubsystem extends Thread {
 			}
 		}
 		System.out.println("== Floor subsystem: Finished!");
+	}
+	
+	/*
+	 * @param x a FloorData type
+	 * method that sends the converted FloorData to the Scheduler
+	 */
+	public void sendData(FloorData x) {
+		byte [] msg = FloorData.convertToByteArray(x);
+		try {
+			sPacket = new DatagramPacket (msg, msg.length, InetAddress.getLocalHost(), 10);
+			//send the packet			
+			srSocket.send(sPacket);
+		}catch(IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		System.out.println("FloorSubsystem: Packet sent to Scheduler.\n");
+		System.out.println("Containing: " +  x.toString() + "\n.");
+	}
+	
+	public void main(String[] args) {
+		FloorSubsystem s = new FloorSubsystem(scheduler);
+		s.start();
 	}
 }
 
