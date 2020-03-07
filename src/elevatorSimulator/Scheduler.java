@@ -8,6 +8,12 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 /*
@@ -56,6 +62,8 @@ public class Scheduler extends Thread {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		
+		
 	}
 
 	public boolean getMoreData() {
@@ -111,6 +119,8 @@ public class Scheduler extends Thread {
 		notifyAll();
 	}
 	*/
+	
+	
 
 	/*
 	 * This method is called by the Floor and Elevator Subsystems
@@ -197,6 +207,8 @@ public class Scheduler extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
+	
 
 	@Override
 	public void run() {
