@@ -18,6 +18,13 @@ public class FloorSubsystem extends Thread {
 		super("Floor Subsystem");
 		this.scheduler = scheduler;
 		this.moreData = true;
+		try {
+			//Construct a datagram socket to send UDP datagram packets
+			srSocket = new DatagramSocket ();
+		}catch(SocketException se) {
+			se.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	@Override
@@ -56,7 +63,7 @@ public class FloorSubsystem extends Thread {
 	 * @param x a FloorData type
 	 * method that sends the converted FloorData to the Scheduler
 	 */
-	public void sendData(FloorData x) {
+	public void sendData(FloorData x) throws IOException {
 		byte [] msg = FloorData.convertToByteArray(x);
 		try {
 			sPacket = new DatagramPacket (msg, msg.length, InetAddress.getLocalHost(), 10);

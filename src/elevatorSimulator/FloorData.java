@@ -4,7 +4,7 @@ import java.sql.Time;
 import java.util.Scanner;
 import java.io.*;
 
-public class FloorData {
+public class FloorData implements Serializable {
 	/**
 	 *  The purpose of this class is to contain the information which will be used by the scheduler
 	 */
@@ -110,20 +110,22 @@ public class FloorData {
 
 	}
 	
-	public static byte[] convertToByteArray(FloorData x) {
+	public static byte[] convertToByteArray(FloorData x) throws IOException{
 		byte [] fdata = null;
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
-			oos.flush();
-			oos.writeObject(x);
-			fdata = baos.toByteArray();
-			//return fdata;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(baos);
+		oos.flush();
+		oos.writeObject(x);
+		fdata = baos.toByteArray();
+		//return fdata;
 		return fdata;
+	}
+	
+	public static FloorData convertToFD(byte[] fData) throws IOException {
+		//fData = new byte[200];
+		ByteArrayInputStream bais = new ByteArrayInputStream(fData);
+		ObjectInputStream ois = new ObjectInputStream(bais); 
+		return (FloorData)ois.readObject();
 	}
 
 }
