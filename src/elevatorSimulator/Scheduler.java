@@ -1,5 +1,9 @@
 package elevatorSimulator;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -17,11 +21,9 @@ public class Scheduler extends Thread {
 	private ArrayList<Elevator> elevators;	// List of elevators
 	private boolean canSendData;
 	private boolean canGetData;
-	private DatagramSocket sendSocket; //socket to send from the scheduler
-	private DatagramSocket fsReceive; //socket to receive from the floor subsystem
-	private DatagramSocket esReceive; //socket to receive from the elevator subsystem
+	private ArrayList<Integer> intFromByte;
 	
-
+	
 	//the scheduler stops when moreData is false
 	private boolean moreData;
 
@@ -37,25 +39,8 @@ public class Scheduler extends Thread {
 		this.moreData = true;
 		this.floorData = new ArrayList<>();	
 		this.elevators = new ArrayList<>();
-		try {
-			this.sendSocket = new DatagramSocket(30); //sending to elevatorSubsystem
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			this.fsReceive = new DatagramSocket(10); //receiving from floorSubsystem
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.intFromByte = new ArrayList<>();
 		
-		try {
-			this.esReceive  = new DatagramSocket(20); //receiving from elevatorSubsystem
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public boolean getMoreData() {
@@ -101,6 +86,8 @@ public class Scheduler extends Thread {
 
 		notifyAll();
 	}
+	
+	
 
 	/*
 	 * This method is called by the Floor and Elevator Subsystems
@@ -157,6 +144,8 @@ public class Scheduler extends Thread {
 		System.out.println("== Schedular: Sending floor requests to Elevator subsystem " + temp);
 		return temp;
 	}
+	
+	
 
 	@Override
 	public void run() {
