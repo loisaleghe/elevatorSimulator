@@ -7,7 +7,10 @@ import java.util.ArrayList;
 /**
  * @author Ediomoabasi Emah, Hilaire Djani
  */
-public class Elevator extends Thread {	
+public class Elevator extends Thread {
+	
+//	Represents the number of this elevator
+	private int number;
 
 	//creates a queue to represent the elevator moving up 
 	private FloorQueue upQueue; 
@@ -28,22 +31,25 @@ public class Elevator extends Thread {
 
 	/**
 	 * Creates a new elevator thread
+	 * @param number an int, represents the number of this elevator
 	 */
-	public Elevator() {
+	public Elevator(int number) {
 		super("Elevator thread");
+		this.number = number;
 		this.upQueue = new FloorQueue();
 		this.downQueue = new FloorQueue();
 		this.currFloor = new Floor(1);
 		this.currDirection = Direction.IDLE;
 		this.isDoorOpen = false;
 	}
-
+	
 	/**
 	 * The creates a new elevator and assigns the specified subsystem to control it
-	 * @param elevatorSubsytem, an ElevatorSubsytem, specifies the ElevatorSubsytem that will be controlling this elevator
+	 * @param elevatorSubsytem, an ElevatorSubsytem, specifies the ElevatorSubsytem that will be controlling this elevator	 * @param elevatorSubsytem
+	 * @param number an int, represents the number of this elevator
 	 */
-	public Elevator (ElevatorSubsystem elevatorSubsytem) {
-		this();
+	public Elevator (ElevatorSubsystem elevatorSubsytem, int number) {
+		this(number);
 		this.elevatorSubsytem = elevatorSubsytem;
 	}
 
@@ -61,6 +67,14 @@ public class Elevator extends Thread {
 	 */
 	public FloorQueue getDownQueue() {
 		return this.downQueue;
+	}
+	
+	/**
+	 * Fetches the number of this elevator
+	 * @return an int, representing the number of this elevator
+	 */
+	public int getNumber() {
+		return this.number;
 	}
 
 	/**

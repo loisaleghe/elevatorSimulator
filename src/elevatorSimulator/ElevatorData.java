@@ -7,43 +7,53 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-public class ElevatorData implements Serializable{
+public class ElevatorData implements Serializable {
 	/**
 	 * The purpose of this class is to contain the information of the elevator that will be passed to the Scheduler
 	 */
 	
 	private Direction direction;  
-	private int currentFloor; 
+	private Floor currentFloor; 
+	private int number;
 	
 	/**
 	 * 
 	 * @param elevatorDirection represents the direction the elevator is moving towards
 	 * @param floorNumber represents the currentFloor is the exact floor the elevator is in
 	 */ 
-	public ElevatorData(Direction elevatorDirection, int floorNumber) {
+	public ElevatorData(Direction elevatorDirection, Floor floorNumber, int number) {
 		this.direction = elevatorDirection;
 		this.currentFloor = floorNumber;
+		this.number = number;
 	}
 	
 	public ElevatorData(Elevator elevator) {
 		this.direction = elevator.getCurrentDirection();
-		this.currentFloor = elevator.getCurrentFloor().getNumber();
+		this.currentFloor = elevator.getCurrentFloor();
+		this.number = elevator.getNumber();
 	}
 	
 	public void setElevatorDirection(Direction newElevatorDirection) {
-		this.direction = newElevatorDirection;
-		
+		this.direction = newElevatorDirection;		
 	}
 
 	public Direction getElevatorDirection() {
 		return this.direction;
 	}
 	
-	public void setFloor(int floorData) {
-		this.currentFloor = floorData;
+	public void setFloor(Floor floor) {
+		this.currentFloor = floor;
+	}
+	
+	/**
+	 * Sets the number of this elevator data
+	 * @param number an int, representing the number to set for this elevator data's number
+	 */
+	public void setNumber(int number) {
+		this.number = number;
 	}
 
-	public int getFloor() {
+	public Floor getFloor() {
 		return this.currentFloor;
 	}
 	
@@ -57,7 +67,7 @@ public class ElevatorData implements Serializable{
 	public static ElevatorData deserialize(byte[] data) throws IOException, ClassNotFoundException{
 		ByteArrayInputStream bais = new ByteArrayInputStream(data);
 		ObjectInputStream ois = new ObjectInputStream(bais);
-		return (ElevatorData)ois.readObject();
+		return (ElevatorData) ois.readObject();
 	}
 
 	

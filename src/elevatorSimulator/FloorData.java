@@ -4,7 +4,7 @@ import java.sql.Time;
 import java.util.Scanner;
 import java.io.*;
 
-public class FloorData {
+public class FloorData implements Serializable {
 	/**
 	 *  The purpose of this class is to contain the information which will be used by the scheduler
 	 */
@@ -124,6 +124,19 @@ public class FloorData {
 			e.printStackTrace();
 		}
 		return fdata;
+	}
+	
+	public static byte[] seriliaze(FloorData fd) throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream (baos);
+		oos.writeObject(fd);
+		return baos.toByteArray();
+	}
+	
+	public static FloorData deserialize(byte[] data) throws IOException, ClassNotFoundException{
+		ByteArrayInputStream bais = new ByteArrayInputStream(data);
+		ObjectInputStream ois = new ObjectInputStream(bais);
+		return (FloorData) ois.readObject();
 	}
 
 }

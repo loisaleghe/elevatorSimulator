@@ -1,9 +1,11 @@
 package elevatorSimulator;
 
+import java.io.Serializable;
+
 /**
  * @author 
  */
-public class Floor {
+public class Floor implements Serializable {
 
 	private Integer number;
 
@@ -12,7 +14,6 @@ public class Floor {
 	 */
 	public Floor(int number) {
 		this.number = number;
-		// TODO Auto-generated constructor stub
 	}
 	
 	public Floor(Floor fl) {
