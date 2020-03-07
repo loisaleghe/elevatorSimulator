@@ -8,22 +8,21 @@ public class FloorSubsystem extends Thread {
 	private Scheduler scheduler; // This represents the scheduler that this floor subsystem will use to fetch ang send data
 	private boolean moreData;
 	private DatagramPacket sPacket;
-	private DatagramSocket srSocket;
+	private DatagramSocket sendSocket;
 
 	/**
 	 * Generates a new floor subsystem that communicates using the specified scheduler
 	 * @param scheduler, a scheduler, represents the scheduler through which this floor subsystem communicates
 	 */
-	public FloorSubsystem(Scheduler scheduler) {
+	public FloorSubsystem() {
 		super("Floor Subsystem");
-		this.scheduler = scheduler;
 		this.moreData = true;
 		try {
 			//Construct a datagram socket to send UDP datagram packets
-			srSocket = new DatagramSocket ();
-		}catch(SocketException se) {
-			se.printStackTrace();
-			System.exit(1);
+			sendSocket = new DatagramSocket ();
+		}catch(SocketException e) {
+			System.err.println("== FLoor SubSystem: Could not create sockets");
+			e.printStackTrace();
 		}
 	}
 
@@ -39,21 +38,23 @@ public class FloorSubsystem extends Thread {
 				while ((line = br.readLine()) != null) {
 					//	Read line and convert to floor data
 					fd = new FloorData(FloorData.parseString(line));
+					
+					byte [] floorRequestData = FloorData.seriliaze(fd);
+					DatagramPacket floorRequestPacket = new DatagramPacket(floorRequestData, floorRequestData.length, InetAddress.getLocalHost(), 10);
 
 					//	Send data to scheduler
 					System.out.println("== Floor Subsystem: Elevator requested on floor " + fd.getFloor());
-					this.scheduler.sendData(fd);
+					this.sendSocket.send(floorRequestPacket);
 
 					Thread.sleep(1000);
 				} 
 
 				br.close();
 				this.moreData = false;
-				this.scheduler.setMoreData(false);
 
 			}catch(IOException | InterruptedException e) {
-				System.err.println("== Floor Subsystem: An error occured");
-				System.err.println(e.getMessage());
+				System.err.println("== FLoor SubSystem: An error occured while sending data to Schedular");
+				e.printStackTrace();
 			}
 		}
 		System.out.println("== Floor subsystem: Finished!");
@@ -68,7 +69,7 @@ public class FloorSubsystem extends Thread {
 		try {
 			sPacket = new DatagramPacket (msg, msg.length, InetAddress.getLocalHost(), 10);
 			//send the packet			
-			srSocket.send(sPacket);
+			sendSocket.send(sPacket);
 		}catch(IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -77,8 +78,8 @@ public class FloorSubsystem extends Thread {
 		System.out.println("Containing: " +  x.toString() + "\n.");
 	}
 	
-	public void main(String[] args) {
-		FloorSubsystem s = new FloorSubsystem(scheduler);
+	public static void main(String[] args) {
+		FloorSubsystem s = new FloorSubsystem();
 		s.start();
 	}
 }

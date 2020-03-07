@@ -141,11 +141,11 @@ public class FloorData implements Serializable {
 		return (FloorData) ois.readObject();
 	}
 
-	public static FloorData convertToFD(byte[] fData) throws IOException, ClassNotFoundException {
-		// fData = new byte[200];
-		ByteArrayInputStream bais = new ByteArrayInputStream(fData);
-		ObjectInputStream ois = new ObjectInputStream(bais);
-		return (FloorData) ois.readObject();
-	}
+//	public static FloorData convertToFD(byte[] fData) throws IOException, ClassNotFoundException {
+//		// fData = new byte[200];
+//		ByteArrayInputStream bais = new ByteArrayInputStream(fData);
+//		ObjectInputStream ois = new ObjectInputStream(bais);
+//		return (FloorData) ois.readObject();
+//	}
 
 }

@@ -160,6 +160,7 @@ public class Scheduler extends Thread {
 			}		
 		}
 
+		this.floorData = newFd;
 		return temp;
 	}
 
