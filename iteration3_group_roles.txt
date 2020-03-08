@@ -8,14 +8,14 @@ Lois Aleghe:
 Hilaire Djani:
 	• Scheduler
 	• ElevatorSubsystem
-	• UML diagram
+	• UML diagrams
 	• SchedularElevatorData
 	• FloorData
 	
 	
 Ediomoabasi Emah:
 	• ElevatorSubsystem
-	• UML diagram
+	• UML diagrams
 	• Group Roles
 	• README file
 

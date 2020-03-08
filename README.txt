@@ -13,7 +13,7 @@ Group Members
 * Lois Aleghe 
 * Mohammed-Yasir Suara
 
-Classes
+Classes and Enums
 *************************
 
 * Direction
@@ -45,7 +45,13 @@ Classes
   Contains the information of the elevator that will be passed to the Scheduler
   
 * SchedularElevatorData
-  Represents the data sent by the scheduler to an elevator
+  Represents the data sent between schedular and elevator subsystem
+
+* SchedularFloorData
+  Represents the data sent between floor subsystem and schedular
+
+* CommunicationMessage
+ Encodes messages exchange between the different components of the project
 
 
 	
@@ -75,16 +81,15 @@ Set-Up Instructions
 * Import the file to eclipse
 * Ensure that the package is elevatorSimulator
 * Run the schedular class first as a java application
-* Then run the elevator subsystem as a java applications
-* Then run the floor subsystem as a java applications
+* Then run the elevator subsystem as a java application
+* Then run the floor subsystem as a java application
 
 Flow
 *************************
 
 1. Elevator arrives on a floor
-2. Elevator sends arrival signal to ElevatorSubsystem
-3. Elevator subsystem sends floor requests to the scheduler 
-4. Scheduler fetches floor requests for elevator's current floor and sends these to the ElevatorSubsystem
+2. Elevator notifies schedular of arrival through elevator subsystem
+4. Scheduler fetches floor requests that this elevator can best handle and sends them ElevatorSubsystem
 5. If there are floor requests, ElevatorSubsystem instructs elevator to move to specified floors.
 6. At the same time, FloorSubsystem continously sends floor requests to the scheduler.
 7. Program keeps running until there are no more floor requests and elevator has visited all of it's floors
