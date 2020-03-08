@@ -1,0 +1,28 @@
+Group Contributions for Iteration 3
+***************************
+
+Lois Aleghe:
+	• Scheduler
+	• ElevatorData
+
+Hilaire Djani:
+	• Scheduler
+	• ElevatorSubsystem
+	• UML diagram
+	• SchedularElevatorData
+	• FloorData
+	
+	
+Ediomoabasi Emah:
+	• ElevatorSubsystem
+	• UML diagram
+	• Group Roles
+	• README file
+
+Abdul-Rahmaan Rufai:
+	• Scheduler
+
+Mohammed-Yasir Suara:
+	• Elevator
+	• FloorSubsystem
+	
