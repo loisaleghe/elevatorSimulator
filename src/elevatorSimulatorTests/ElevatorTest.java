@@ -28,7 +28,7 @@ public class ElevatorTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		this.elevator = new Elevator();
+		this.elevator = new Elevator(1);
 	}
 
 	/**
