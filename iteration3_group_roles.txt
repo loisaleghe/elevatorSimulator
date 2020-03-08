@@ -15,6 +15,7 @@ Hilaire Djani:
 	• ElevatorTest
 	• UML diagram
 	• SchedularElevatorData
+	• FloorData
 	
 	
 Ediomoabasi Emah:
@@ -30,9 +31,11 @@ Ediomoabasi Emah:
 Abdul-Rahmaan Rufai:
 	• Scheduler
 	• FloorDataTest
+	• FloorSubsystem
 
 Mohammed-Yasir Suara:
 	• Elevator
 	• Direction
 	• SchedularTest
 	• FloorSubsystem
+	
