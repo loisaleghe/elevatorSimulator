@@ -5,8 +5,8 @@ import java.net.*;
 
 public class FloorSubsystem extends Thread {
 
-	private Scheduler scheduler; // This represents the scheduler that this floor subsystem will use to fetch ang send data
-	private boolean moreData;
+	//private Scheduler scheduler; // This represents the scheduler that this floor subsystem will use to fetch ang send data
+	private boolean stopSystem;
 	private DatagramPacket sPacket;
 	private DatagramSocket sendSocket;
 
@@ -16,7 +16,7 @@ public class FloorSubsystem extends Thread {
 	 */
 	public FloorSubsystem() {
 		super("Floor Subsystem");
-		this.moreData = true;
+		this.stopSystem = false;
 		try {
 			//Construct a datagram socket to send UDP datagram packets
 			sendSocket = new DatagramSocket ();
@@ -28,7 +28,7 @@ public class FloorSubsystem extends Thread {
 
 	@Override
 	public void run() {
-		while(this.moreData) {
+		while(!this.stopSystem) {
 			try {
 				//	Read floor data values from file
 				BufferedReader br = new BufferedReader(new FileReader("floorRequests.txt")); 
@@ -38,28 +38,39 @@ public class FloorSubsystem extends Thread {
 				while ((line = br.readLine()) != null) {
 					//	Read line and convert to floor data
 					fd = new FloorData(FloorData.parseString(line));
-					
-					byte [] floorRequestData = FloorData.seriliaze(fd);
+
+					byte [] floorRequestData = SchedularFloorData.seriliaze(new SchedularFloorData(CommunicationMessage.MORE_FLOOR_REQUESTS, fd));
 					DatagramPacket floorRequestPacket = new DatagramPacket(floorRequestData, floorRequestData.length, InetAddress.getLocalHost(), 10);
 
 					//	Send data to scheduler
 					System.out.println("== Floor Subsystem: Elevator requested on floor " + fd.getFloor());
 					this.sendSocket.send(floorRequestPacket);
 
-					Thread.sleep(1000);
+					Thread.sleep(5000);
 				} 
 
 				br.close();
-				this.moreData = false;
+				this.stopSystem = true;
+
+				// Notify the scheduler that there's no more floor requests
+				byte [] endData = SchedularFloorData.seriliaze(new SchedularFloorData(CommunicationMessage.NO_MORE_FLOOR_REQUESTS));
+				DatagramPacket endPacket = new DatagramPacket(endData, endData.length, InetAddress.getLocalHost(), 10);
+
+				//	Send data to scheduler
+				System.out.println("== Floor Subsystem: Notifying schedular of no more floor requests");
+				this.sendSocket.send(endPacket);
+				System.out.println("== Floor subsystem: Finished!");
 
 			}catch(IOException | InterruptedException e) {
 				System.err.println("== FLoor SubSystem: An error occured while sending data to Schedular");
 				e.printStackTrace();
 			}
 		}
-		System.out.println("== Floor subsystem: Finished!");
+
+		//	Close sockets
+		this.sendSocket.close();
 	}
-	
+
 	/*
 	 * @param x a FloorData type
 	 * method that sends the converted FloorData to the Scheduler
@@ -77,7 +88,7 @@ public class FloorSubsystem extends Thread {
 		System.out.println("FloorSubsystem: Packet sent to Scheduler.\n");
 		System.out.println("Containing: " +  x.toString() + "\n.");
 	}
-	
+
 	public static void main(String[] args) {
 		FloorSubsystem s = new FloorSubsystem();
 		s.start();

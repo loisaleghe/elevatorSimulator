@@ -12,6 +12,8 @@ public class ElevatorSubsystem extends Thread {
 	//	private Scheduler scheduler; //Scheduler object to interact with the elevator subsystem to get data
 
 	private Elevator elevator; // The elevator that this Elevator Subsystem controls
+	
+	private int number;
 
 	private DatagramSocket sendSocket; // socket that sends floor requests to the Scheduler
 
@@ -29,14 +31,15 @@ public class ElevatorSubsystem extends Thread {
 	 */
 	public ElevatorSubsystem(int elevatorNumber) {
 		super("Elevator Subsystem");
+		this.number = elevatorNumber;
 		this.elevator = new Elevator(this, elevatorNumber);
 
 		try {
 			// Create the Datagram sockets used to send and receive packets
 			sendSocket = new DatagramSocket();
-			receiveSocket = new DatagramSocket(30);
+			receiveSocket = new DatagramSocket(3000 + elevatorNumber);
 		}catch (SocketException e) {
-			System.err.println("== Elevator Subsystem: Could not create sockets");
+			System.err.println("== Elevator Subsystem " + this.number + ": Could not create sockets");
 			e.printStackTrace();
 		}
 	}
@@ -99,64 +102,18 @@ public class ElevatorSubsystem extends Thread {
 	 * Notifies the schedular of the elevator's arrival on a floor
 	 */
 	public void notifySchedular() {
-		try {
-
-			Direction currentDirection = this.elevator.getCurrentDirection();
-			
+		try {			
 			// Generate packet to send to scheduler as request
 			byte [] elevatorRequestData = ElevatorData.seriliaze(new ElevatorData(this.elevator));
 			DatagramPacket elevatorRequestPacket = new DatagramPacket(elevatorRequestData, elevatorRequestData.length, InetAddress.getLocalHost(), 20);
 
-			// Notify the schedular of elevator's arrival on a floor
-			System.out.println("== Elevator subsystem: Notifyng schedular of elevator arrival");
-
-			this.sendSocket.send(elevatorRequestPacket);
-
-			byte [] elevatorReplyData = new byte[10000];
-			DatagramPacket elevatorReplyPacket = new DatagramPacket(elevatorReplyData, elevatorReplyData.length);
-
-			// Receive response from scheduler
-			System.out.println("== Elevator subsystem: Receiving floor requests from schedular");
-			this.receiveSocket.receive(elevatorReplyPacket);
-
-			// Parse the reply received to extract floor request
-			SchedularElevatorData schedularResponse = SchedularElevatorData.deserialize(elevatorReplyPacket.getData());
-			ArrayList<Floor> floorRequests = schedularResponse.getFloorRequests();
-			if(floorRequests.isEmpty()) {
-				System.out.println("== Elevator subsystem: No floor requests on this floor");
-				if(this.elevator.isDoorOpen() && currentDirection.equals(Direction.IDLE)) // Close elevator door if open
-					this.elevator.closeElevatorDoor();
-			} else {
-				// If there is a request on this floor, signal elevator to stop or move in a specific direction
-				System.out.println("== Elevator subsystem: Floor requests received " + floorRequests);
-
-				// If elevator is idle, notify the elevator to move in direction of request
-				if(currentDirection.equals(Direction.IDLE)) {
-					if(this.elevator.isDoorOpen()) // Close elevator door if open
-						this.elevator.closeElevatorDoor();
-
-					this.elevator.setCurrentDirection(floorRequests.get(0).getNumber() > this.elevator.getCurrentFloor().getNumber() ? Direction.UP : Direction.DOWN);
-					this.elevator.addFloors(floorRequests);
-					System.out.println("== Elevator subsystem: Instructing idle elevator to move " + this.elevator.getCurrentDirection());
-				} else {
-					this.elevator.stopElevator();  // Stop elevator if moving
-					if(!this.elevator.isDoorOpen()) // Open elevator door if not open
-						this.elevator.openElevatorDoor();
-
-					this.elevator.pressButton(floorRequests);
-					this.elevator.closeElevatorDoor();
-				}
-			}
-
-			this.elevator.move();
-
+			// Notify the scheduler of elevator's arrival on a floor
+			System.out.println("== Elevator Subsystem " + this.number + ": Notifyng schedular of elevator arrival");
+			this.sendSocket.send(elevatorRequestPacket);		
 		} catch (IOException e) {
-			System.err.println("== Elevator SubSystem: An error occured while sending request to scheduler");
+			System.err.println("== Elevator Subsystem " + this.number + ": An error occured while sending request to scheduler");
 			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			System.err.println("== Elevator SubSystem: An error occured while sending request to scheduler");
-			e.printStackTrace();
-		}
+		} 
 
 		/*
 		ArrayList<Floor> requestedFloors = this.scheduler.getData(currentFloor);
@@ -215,7 +172,60 @@ public class ElevatorSubsystem extends Thread {
 	@Override
 	public void run() {
 		//		Repeat until system is stopped. System is stop when there is no more data to read and elevator visited all of it's floors
-		while(!this.stopSystem) {
+		while(true) {
+			Direction currentDirection = this.elevator.getCurrentDirection();
+
+			byte [] elevatorReplyData = new byte[10000];
+			DatagramPacket elevatorReplyPacket = new DatagramPacket(elevatorReplyData, elevatorReplyData.length);
+
+			try {
+				// Receive floor requests from scheduler
+				System.out.println("== Elevator Subsystem " + this.number + ": Waiting for floor requests from scheduler...");
+				this.receiveSocket.receive(elevatorReplyPacket);
+				System.out.println("== Elevator Subsystem " + this.number + ": Floor requests received from scheduler");
+
+				// Parse the reply received to extract floor request
+				SchedularElevatorData schedularResponse = SchedularElevatorData.deserialize(elevatorReplyPacket.getData());
+				ArrayList<FloorData> floorRequests = schedularResponse.getFloorRequests();
+
+				if(floorRequests.isEmpty()) {
+					System.out.println("== Elevator Subsystem " + this.number + ": No floor requests on this floor");
+					if(this.elevator.isDoorOpen() && currentDirection.equals(Direction.IDLE)) // Close elevator door if open
+						this.elevator.closeElevatorDoor();
+				} else {
+					// If there is a request on this floor, signal elevator to stop or move in a specific direction
+					System.out.println("== Elevator Subsystem " + this.number + " Floor requests received " + floorRequests);
+
+					// If elevator is idle, notify the elevator to move in direction of request
+					if(currentDirection.equals(Direction.IDLE)) {
+						if(this.elevator.isDoorOpen()) // Close elevator door if open
+							this.elevator.closeElevatorDoor();
+
+						this.elevator.setCurrentDirection(floorRequests.get(0).getFloor() > this.elevator.getCurrentFloor().getNumber() ? Direction.UP : Direction.DOWN);
+						System.out.println("== Elevator Subsystem " + this.number + ": Instructing idle elevator to move " + this.elevator.getCurrentDirection());
+					} 
+					
+					//										else {
+					//						//this.elevator.stopElevator();  // Stop elevator if moving
+					//						//if(!this.elevator.isDoorOpen()) // Open elevator door if not open
+					//							//this.elevator.openElevatorDoor();
+					//
+					//						this.elevator.pressButton(floorRequests);
+					//						//this.elevator.closeElevatorDoor();
+					//					}
+					for(FloorData fr: floorRequests) {
+						this.elevator.addFloor(new Floor(fr.getFloor()));
+						this.elevator.pressButton(new Floor(fr.getCarButton()));
+					}
+				}
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			//			System.out.println("Elevator Subsystem: sending a packet that contains:\n" + floorReq);
 			//
@@ -324,12 +334,13 @@ public class ElevatorSubsystem extends Thread {
 			//				System.err.println(e.getMessage());
 			//			}
 		}
-		System.out.println("== Elevator Subsystem: Finished!");
 	}
-	
+
 	public static void main(String [] args) {
-		ElevatorSubsystem es = new ElevatorSubsystem(1);
-		es.start();
+		ElevatorSubsystem es1 = new ElevatorSubsystem(1);
+		ElevatorSubsystem es2 = new ElevatorSubsystem(2);
+		es1.start();
+		es2.start();
 	}
 
 }

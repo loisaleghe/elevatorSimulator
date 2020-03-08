@@ -8,8 +8,8 @@ import java.util.ArrayList;
  * @author Ediomoabasi Emah, Hilaire Djani
  */
 public class Elevator extends Thread {
-	
-//	Represents the number of this elevator
+
+	//	Represents the number of this elevator
 	private int number;
 
 	//creates a queue to represent the elevator moving up 
@@ -42,7 +42,7 @@ public class Elevator extends Thread {
 		this.currDirection = Direction.IDLE;
 		this.isDoorOpen = false;
 	}
-	
+
 	/**
 	 * The creates a new elevator and assigns the specified subsystem to control it
 	 * @param elevatorSubsytem, an ElevatorSubsytem, specifies the ElevatorSubsytem that will be controlling this elevator	 * @param elevatorSubsytem
@@ -68,7 +68,7 @@ public class Elevator extends Thread {
 	public FloorQueue getDownQueue() {
 		return this.downQueue;
 	}
-	
+
 	/**
 	 * Fetches the number of this elevator
 	 * @return an int, representing the number of this elevator
@@ -148,11 +148,11 @@ public class Elevator extends Thread {
 	 */
 	public void openElevatorDoor() {
 		try {
-			System.out.println("== Elevator: Opening door on floor " +  + this.currFloor.getNumber());
+			System.out.println("== Elevator " + this.number + ": Opening door on floor " +  + this.currFloor.getNumber());
 			this.isDoorOpen = true;
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			System.err.println("== Elevator: An error occured while opening elevator door");
+			System.err.println("== Elevator " + this.number + ": An error occured while opening elevator door");
 			System.err.println(e.getMessage());
 		}
 	}
@@ -163,10 +163,10 @@ public class Elevator extends Thread {
 	 */
 	public void stopElevator() {
 		try {
-			System.out.println("== Elevator: Elevator stopped on floor " +  + this.currFloor.getNumber());
+			System.out.println("== Elevator " + this.number + ": Elevator stopped on floor " +  + this.currFloor.getNumber());
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			System.err.println("== Elevator: An error occured while opening elevator door");
+			System.err.println("== Elevator " + this.number + ": An error occured while opening elevator door");
 			System.err.println(e.getMessage());
 		}
 	}
@@ -177,11 +177,11 @@ public class Elevator extends Thread {
 	 */
 	public void closeElevatorDoor() {
 		try {
-			System.out.println("== Elevator: Closing door on floor " + this.currFloor.getNumber());
+			System.out.println("== Elevator " + this.number + ": Closing door on floor " + this.currFloor.getNumber());
 			this.isDoorOpen = false;
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			System.err.println("== Elevator: An error occured while closing elevator door");
+			System.err.println("== Elevator " + this.number + ": An error occured while closing elevator door");
 			System.err.println(e.getMessage());
 		}
 	}
@@ -191,7 +191,7 @@ public class Elevator extends Thread {
 	 * @param f, a Floor, represents the floor to add to the elevator's queues
 	 */
 	public void addFloor(Floor f) {
-		System.out.println("== Elevator: Adding " + f);
+		System.out.println("== Elevator " + this.number + ": Adding " + f);
 
 		//gets the destination of the floor that is pressed 
 		int floorNumber = f.getNumber();
@@ -219,8 +219,14 @@ public class Elevator extends Thread {
 	 * @param floors, an Arraylist of floors, represents the floors to add to the elevator's queues
 	 */
 	public void addFloors(ArrayList<Floor> floors) {
-		for(Floor fl: floors)
+		for(Floor fl: floors) {
 			this.addFloor(fl);
+		}
+	}
+
+	public void pressButton(Floor floor) {
+		System.out.println("== Elevator " + this.number + ": Pressing button " + floor.getNumber());
+		this.addFloor(new Floor(floor));
 	}
 
 	/**
@@ -228,11 +234,10 @@ public class Elevator extends Thread {
 	 * Adds the floors specified to the elevator's floor queues
 	 * @param floors
 	 */
-	public void pressButton(ArrayList<Floor> floors) {
+	public void pressButtons(ArrayList<Floor> floors) {
 		// Add floors to elevator queue
 		for(Floor fl: floors) {
-			System.out.println("== Elevator: Pressing button " + fl.getNumber());
-			this.addFloor(new Floor(fl));
+			this.pressButton(fl);
 		}
 	}
 
@@ -243,9 +248,9 @@ public class Elevator extends Thread {
 		//scenarios for the elevator moving up
 		if (currDirection.equals(Direction.UP)) {
 			//	Move elevator up one floor
-			System.out.println("== Elevator: Floors to visit " + this.upQueue);			
+			System.out.println("== Elevator " + this.number + ": Floors to visit " + this.upQueue);			
 			this.currFloor.setNumber(currFloor.getNumber() + 1);
-			System.out.println("== Elevator: Elevator moved to " + this.currFloor);
+			System.out.println("== Elevator " + this.number + ": Elevator moved to " + this.currFloor);
 
 			//removes the floor from the queue if the current floor is the same
 			//as the floor at that specific index
@@ -260,9 +265,9 @@ public class Elevator extends Thread {
 		//scenarios for the elevator moving down
 		else if (currDirection.equals(Direction.DOWN)) {
 			//	Move elevator down one floor
-			System.out.println("== Elevator: Floors to visit " + this.downQueue);	
+			System.out.println("== Elevator " + this.number + ": Floors to visit " + this.downQueue);	
 			this.currFloor.setNumber(currFloor.getNumber() - 1);
-			System.out.println("== Elevator: Elevator moved to " + this.currFloor);
+			System.out.println("== Elevator " + this.number + ": Elevator moved to " + this.currFloor);
 
 			//removes the floor from the queue if the current floor is the same
 			//as the floor at that specific index
@@ -271,30 +276,38 @@ public class Elevator extends Thread {
 				this.openElevatorDoor();
 				downQueue.poll();
 			}
+
+		} else {
+			return;
 		}
 
 		//	Reset elevator direction
 		this.adjustElevatorDirection();
+
+		//		Notify scheduler about elevator movement through elevator subsystem
+		System.out.println("== Elevator " + this.number + ": Signaling Schedular of elevator arrival");
+		this.elevatorSubsytem.notifySchedular();
 	}
 
 	@Override
 	public void run() {
+		this.elevatorSubsytem.notifySchedular();
+
 		//		Continue running until all floors are visited and there are no more requests
 		while(!this.upQueue.isEmpty() || !this.downQueue.isEmpty() || !this.elevatorSubsytem.systemStopped()) {
-			//	Notify scheduler about elevator movement through elevator subsystem
-			System.out.println("== Elevator: Signaling Schedular through Elevator subsystem");
-			this.elevatorSubsytem.notifySchedular();
-			//			this.elevatorSubsytem.receiveElevatorSignal(this);
-
 			try {
+				this.move();
+				if(this.isDoorOpen && !this.currDirection.equals(Direction.IDLE)) {
+					this.closeElevatorDoor();
+				}
+
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				System.err.println("== Elevator: An error occured");
+				System.err.println("== Elevator " + this.number + ": An error occured");
 				System.err.println(e.getMessage());
 			}
 		}
-		System.out.println("== Elevator: Finished!");
-
+		System.out.println("== Elevator " + this.number + ": Finished!");
 	}
 
 }

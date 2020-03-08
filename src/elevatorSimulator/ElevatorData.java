@@ -44,6 +44,10 @@ public class ElevatorData implements Serializable {
 	public void setFloor(Floor floor) {
 		this.currentFloor = floor;
 	}
+
+	public Floor getFloor() {
+		return this.currentFloor;
+	}
 	
 	/**
 	 * Sets the number of this elevator data
@@ -52,9 +56,13 @@ public class ElevatorData implements Serializable {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-
-	public Floor getFloor() {
-		return this.currentFloor;
+	
+	/**
+	 * Fetch the number of this elevator data
+	 * @return an int, representing the number of this elevator data
+	 */
+	public int getNumber() {
+		return this.number;
 	}
 	
 	public static byte[] seriliaze(ElevatorData obj) throws IOException {

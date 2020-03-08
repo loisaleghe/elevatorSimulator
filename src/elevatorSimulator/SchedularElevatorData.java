@@ -17,17 +17,24 @@ import java.util.ArrayList;
  */
 public class SchedularElevatorData implements Serializable {
 	
-	ArrayList<Floor> floorRequests;
+	private ArrayList<FloorData> floorRequests;
+	private CommunicationMessage message;
 
-	/**
-	 * 
-	 */
-	public SchedularElevatorData(ArrayList<Floor> floorRequests) {
+	public SchedularElevatorData(CommunicationMessage message) {
+		this.message = message;
+	}
+	
+	public SchedularElevatorData(CommunicationMessage message, ArrayList<FloorData> floorRequests) {
+		this(message);
 		this.floorRequests = floorRequests;
 	}
 	
-	public ArrayList<Floor> getFloorRequests(){
+	public ArrayList<FloorData> getFloorRequests(){
 		return this.floorRequests;
+	}
+	
+	public CommunicationMessage getMessage() {
+		return this.message;
 	}
 	
 	public static byte[] seriliaze(SchedularElevatorData sed) throws IOException {
