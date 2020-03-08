@@ -117,17 +117,6 @@ public class FloorData implements Serializable {
 
 	}
 
-	public static byte[] convertToByteArray(FloorData x) throws IOException {
-		byte[] fdata = null;
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
-		oos.flush();
-		oos.writeObject(x);
-		fdata = baos.toByteArray();
-		// return fdata;
-		return fdata;
-	}
-
 	public static byte[] seriliaze(FloorData fd) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -140,12 +129,5 @@ public class FloorData implements Serializable {
 		ObjectInputStream ois = new ObjectInputStream(bais);
 		return (FloorData) ois.readObject();
 	}
-
-//	public static FloorData convertToFD(byte[] fData) throws IOException, ClassNotFoundException {
-//		// fData = new byte[200];
-//		ByteArrayInputStream bais = new ByteArrayInputStream(fData);
-//		ObjectInputStream ois = new ObjectInputStream(bais);
-//		return (FloorData) ois.readObject();
-//	}
 
 }

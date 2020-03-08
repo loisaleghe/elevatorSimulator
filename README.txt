@@ -74,7 +74,9 @@ Set-Up Instructions
 * Extract project zip folder
 * Import the file to eclipse
 * Ensure that the package is elevatorSimulator
-* Run program through the Scheduler class
+* Run the schedular class first as a java application
+* Then run the elevator subsystem as a java applications
+* Then run the floor subsystem as a java applications
 
 Flow
 *************************

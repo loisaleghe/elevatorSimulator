@@ -1,9 +1,6 @@
 package elevatorSimulator;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -21,27 +18,23 @@ public class Scheduler extends Thread {
 	//creates an object of type floorData
 	//private FloorData floorData;
 
-	private ArrayList<FloorData> floorData ;	//	Arraylist containing floor data from requests from the same floor. Iteration 2
+	private List<FloorData> floorData ;	//	Arraylist containing floor data from requests from the same floor. Iteration 2
 	private List<ElevatorData> elevators;	// List of elevators
-	private boolean canSendData;
 	private DatagramSocket sendSocket;
 	private DatagramSocket fsReceive;
 	private DatagramSocket esReceive;
-	private ArrayList<DatagramPacket> receivePacket;
-
 	//the scheduler stops when stopSystem is true
 	private boolean stopSystem;
 
 
-	/*
+	/**
 	 * The constructor to define the instance variables 
 	 * of the scheduler
 	 */
 	public Scheduler() {
 		super("Schedular");
-		this.canSendData = true;
 		this.stopSystem = false;
-		this.floorData = new ArrayList<>();	
+		this.floorData = Collections.synchronizedList(new ArrayList<>());	
 		this.elevators = Collections.synchronizedList(new ArrayList<>());
 
 		try {
@@ -93,38 +86,6 @@ public class Scheduler extends Thread {
 		return false;
 	}
 
-	/*
-	 * This method is called by the Floor and Elevator Subsystems
-	 * to continuously send data to the scheduler
-	 */
-
-	public synchronized void sendData(FloorData fl) {
-		//		Wait if flood data is being processed
-		while(!this.canSendData) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
-		//		try {
-		//			//bytesToFloorData
-		//		}
-		//		catch(UnknownHostException e){
-		//			e.printStackTrace();
-		//	         System.exit(1);
-		//		}
-
-		System.out.println("== Schedular: Received request on floor " + fl.getFloor());
-		//this.floorData = new FloorData(fl);
-		this.floorData.add(fl);				//Populating floor data arraylist with floordata then sending it to the elevator subsystem. Iteration 2
-		this.canSendData = false;
-
-		notifyAll();
-	}	
-
-
 	/**
 	 * This method is called by the Floor and Elevator Subsystems
 	 * to continuously get data from the scheduler
@@ -148,9 +109,9 @@ public class Scheduler extends Thread {
 					newFd.add(fd);
 				}
 			}
+			this.floorData = newFd;
 		}		
 
-		this.floorData = newFd;
 		return temp;
 	}
 
@@ -192,32 +153,9 @@ public class Scheduler extends Thread {
 		}
 	}
 
-	public void bytesToFloorData() {
-		try {
-			if(!receivePacket.isEmpty()) {
-				for(DatagramPacket dP : receivePacket) {
-					ByteArrayInputStream bais = new ByteArrayInputStream(dP.getData());
-					ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new BufferedInputStream(bais)));
-
-					Object o = ois.readObject();
-					ois.close();
-
-					if(o instanceof FloorData) {
-						FloorData fd = (FloorData) o;
-						System.out.println("Scheduler received floordata containing :" + fd.toString() + "\n");
-					}
-				}
-			}
-		}
-
-		catch(IOException e) {
-			e.printStackTrace();
-		}
-		catch(ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
+	/**
+	 * Starts the scheduler and all of its sub threads
+	 */
 	@Override
 	public void start() {
 		super.start();
@@ -275,16 +213,6 @@ public class Scheduler extends Thread {
 					if(!isElevatorPresent(ed)) {
 						addElevator(ed);
 					}
-
-					//					ArrayList<Floor> floorRequests = getData(ed.getElevatorDirection().equals(Direction.IDLE) ? null : ed.getFloor());
-					//
-					//					byte [] elevatorResponseData =SchedularElevatorData.seriliaze(new SchedularElevatorData(CommunicationMessage.ELEVATOR_CONTINUE, floorRequests));
-					//					DatagramPacket elevatorResponsePacket = new DatagramPacket(elevatorResponseData, elevatorResponseData.length, InetAddress.getLocalHost(), 30);
-					//
-					//					// Send floor requests to elevator subsystem
-					//					System.out.println("== Schedular: Sending floor requests to elevator subsystem...");
-					//					sendSocket.send(elevatorResponsePacket);
-					//					System.out.println("== Schedular: Floor requests sent to elevator subsystem");
 				} catch (IOException e) {
 					System.err.println("== Scheduler: Could not send/receive data to/from elevator subsystem");
 					System.err.println(e.getMessage());
@@ -293,19 +221,6 @@ public class Scheduler extends Thread {
 					System.err.println(e.getMessage());
 				}
 			}
-
-			//			try {
-			//				// Notifify the floor subsystem that there are no more floor requests
-			//				byte [] endData =SchedularElevatorData.seriliaze(new SchedularElevatorData(CommunicationMessage.NO_MORE_FLOOR_REQUESTS));
-			//				DatagramPacket endPacket = new DatagramPacket(endData, endData.length, InetAddress.getLocalHost(), 30);
-			//
-			//				// Send floor requests to elevator subsystem
-			//				System.out.println("== Schedular: No more floor requests. Stopping communication with elevator subsystem...");
-			//				sendSocket.send(endPacket);
-			//			} catch (IOException e) {
-			//				System.err.println("== Schedular: Could not notify elevator subsystem");
-			//				System.err.println(e.getMessage());
-			//			}
 		}
 	}
 

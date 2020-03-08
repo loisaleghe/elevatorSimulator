@@ -7,7 +7,6 @@ public class FloorSubsystem extends Thread {
 
 	//private Scheduler scheduler; // This represents the scheduler that this floor subsystem will use to fetch ang send data
 	private boolean stopSystem;
-	private DatagramPacket sPacket;
 	private DatagramSocket sendSocket;
 
 	/**
@@ -46,7 +45,7 @@ public class FloorSubsystem extends Thread {
 					System.out.println("== Floor Subsystem: Elevator requested on floor " + fd.getFloor());
 					this.sendSocket.send(floorRequestPacket);
 
-					Thread.sleep(5000);
+					Thread.sleep(2000);
 				} 
 
 				br.close();
@@ -71,27 +70,9 @@ public class FloorSubsystem extends Thread {
 		this.sendSocket.close();
 	}
 
-	/*
-	 * @param x a FloorData type
-	 * method that sends the converted FloorData to the Scheduler
-	 */
-	public void sendData(FloorData x) throws IOException {
-		byte [] msg = FloorData.convertToByteArray(x);
-		try {
-			sPacket = new DatagramPacket (msg, msg.length, InetAddress.getLocalHost(), 10);
-			//send the packet			
-			sendSocket.send(sPacket);
-		}catch(IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		System.out.println("FloorSubsystem: Packet sent to Scheduler.\n");
-		System.out.println("Containing: " +  x.toString() + "\n.");
-	}
-
 	public static void main(String[] args) {
-		FloorSubsystem s = new FloorSubsystem();
-		s.start();
+		FloorSubsystem fs = new FloorSubsystem();
+		fs.start();
 	}
 }
 
