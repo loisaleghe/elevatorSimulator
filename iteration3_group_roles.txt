@@ -2,27 +2,18 @@ Group Contributions for Iteration 3
 ***************************
 
 Lois Aleghe:
-	• ElevatorSubsystem
-	• Floor
 	• Scheduler
 	• ElevatorData
 
 Hilaire Djani:
-	• Elevator
-	• FloorQueue
 	• Scheduler
 	• ElevatorSubsystem
-	• ElevatorTest
 	• UML diagram
 	• SchedularElevatorData
 	• FloorData
 	
 	
 Ediomoabasi Emah:
-	• Elevator
-	• FloorQueue
-	• ElevatorTest
-	• FloorDataTest
 	• ElevatorSubsystem
 	• UML diagram
 	• Group Roles
@@ -30,12 +21,8 @@ Ediomoabasi Emah:
 
 Abdul-Rahmaan Rufai:
 	• Scheduler
-	• FloorDataTest
-	• FloorSubsystem
 
 Mohammed-Yasir Suara:
 	• Elevator
-	• Direction
-	• SchedularTest
 	• FloorSubsystem
 	
