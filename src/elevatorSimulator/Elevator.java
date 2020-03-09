@@ -283,10 +283,6 @@ public class Elevator extends Thread {
 
 		//	Reset elevator direction
 		this.adjustElevatorDirection();
-
-		//		Notify scheduler about elevator movement through elevator subsystem
-		System.out.println("== Elevator " + this.number + ": Signaling Schedular of elevator arrival");
-		this.elevatorSubsytem.notifySchedular();
 	}
 
 	@Override
@@ -297,8 +293,15 @@ public class Elevator extends Thread {
 		while(!this.upQueue.isEmpty() || !this.downQueue.isEmpty() || !this.elevatorSubsytem.systemStopped()) {
 			try {
 				this.move();
-				if(this.isDoorOpen && !this.currDirection.equals(Direction.IDLE)) {
-					this.closeElevatorDoor();
+							
+				if(!this.currDirection.equals(Direction.IDLE)) {
+					//		Notify scheduler about elevator movement through elevator subsystem
+					System.out.println("== Elevator " + this.number + ": Signaling Schedular of elevator arrival");
+					this.elevatorSubsytem.notifySchedular();
+					
+					if(this.isDoorOpen) {
+						this.closeElevatorDoor();
+					}
 				}
 
 				Thread.sleep(1000);
