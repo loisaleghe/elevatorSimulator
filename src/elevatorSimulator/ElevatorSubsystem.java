@@ -78,7 +78,7 @@ public class ElevatorSubsystem extends Thread {
 		try {			
 			// Generate packet to send to scheduler as request
 			byte [] elevatorRequestData = ElevatorData.seriliaze(new ElevatorData(this.elevator));
-			DatagramPacket elevatorRequestPacket = new DatagramPacket(elevatorRequestData, elevatorRequestData.length, InetAddress.getByName("172.17.163.254"), 20);
+			DatagramPacket elevatorRequestPacket = new DatagramPacket(elevatorRequestData, elevatorRequestData.length, InetAddress.getLocalHost(), 20);
 
 			// Notify the scheduler of elevator's arrival on a floor
 			System.out.println("== Elevator Subsystem " + this.number + ": Notifyng schedular of elevator arrival");

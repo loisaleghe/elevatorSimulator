@@ -141,7 +141,7 @@ public class Scheduler extends Thread {
 		try {
 			// Send requests to best elevator
 			byte [] elevatorResponseData = SchedularElevatorData.seriliaze(new SchedularElevatorData(CommunicationMessage.ELEVATOR_CONTINUE, floorRequests));
-			DatagramPacket elevatorResponsePacket = new DatagramPacket(elevatorResponseData, elevatorResponseData.length, InetAddress.getByName("172.17.48.203"), 3000 + bestElevator.getNumber());
+			DatagramPacket elevatorResponsePacket = new DatagramPacket(elevatorResponseData, elevatorResponseData.length, InetAddress.getLocalHost(), 3000 + bestElevator.getNumber());
 
 			// Send floor requests to elevator subsystem
 			System.out.println("== Schedular: Sending floor requests to elevator subsystem...");
