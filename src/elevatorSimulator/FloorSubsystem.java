@@ -32,7 +32,7 @@ public class FloorSubsystem extends Thread {
 			try {
 				//	Read floor data values from file
 				BufferedReader br = new BufferedReader(new FileReader("floorRequests.txt")); 
-				FloorData fd;
+				FloorData fd;	
 
 				String line; 
 				while ((line = br.readLine()) != null) {
@@ -42,7 +42,7 @@ public class FloorSubsystem extends Thread {
 					fd = new FloorData(FloorData.parseString(line));
 
 					byte [] floorRequestData = SchedularFloorData.seriliaze(new SchedularFloorData(CommunicationMessage.MORE_FLOOR_REQUESTS, fd));
-					DatagramPacket floorRequestPacket = new DatagramPacket(floorRequestData, floorRequestData.length, InetAddress.getLocalHost(), 10);
+					DatagramPacket floorRequestPacket = new DatagramPacket(floorRequestData, floorRequestData.length, InetAddress.getByName("172.17.163.254"), 10);
 
 					//	Send data to scheduler
 					System.out.println("== Floor Subsystem: Elevator requested on floor " + fd.getFloor());
@@ -55,7 +55,7 @@ public class FloorSubsystem extends Thread {
 
 				// Notify the scheduler that there's no more floor requests
 				byte [] endData = SchedularFloorData.seriliaze(new SchedularFloorData(CommunicationMessage.NO_MORE_FLOOR_REQUESTS));
-				DatagramPacket endPacket = new DatagramPacket(endData, endData.length, InetAddress.getLocalHost(), 10);
+				DatagramPacket endPacket = new DatagramPacket(endData, endData.length, InetAddress.getByName("172.17.163.254"), 10);
 
 				//	Send data to scheduler
 				System.out.println("== Floor Subsystem: Notifying schedular of no more floor requests");
