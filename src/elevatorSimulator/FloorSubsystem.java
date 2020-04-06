@@ -2,6 +2,7 @@ package elevatorSimulator;
 
 import java.io.*;
 import java.net.*;
+import java.sql.Time;
 
 public class FloorSubsystem extends Thread {
 
@@ -35,6 +36,8 @@ public class FloorSubsystem extends Thread {
 
 				String line; 
 				while ((line = br.readLine()) != null) {
+					Thread.sleep(5000);
+
 					//	Read line and convert to floor data
 					fd = new FloorData(FloorData.parseString(line));
 
@@ -45,7 +48,6 @@ public class FloorSubsystem extends Thread {
 					System.out.println("== Floor Subsystem: Elevator requested on floor " + fd.getFloor());
 					this.sendSocket.send(floorRequestPacket);
 
-					Thread.sleep(2000);
 				} 
 
 				br.close();
@@ -71,30 +73,8 @@ public class FloorSubsystem extends Thread {
 	}
 
 	public static void main(String[] args) {
+
 		FloorSubsystem fs = new FloorSubsystem();
 		fs.start();
 	}
 }
-
-
-//		while(true) {
-//			Random rand = new Random();
-//			Time time = new Time(System.currentTimeMillis());		//Get current time
-//			int floorNumber = rand.nextInt((9) + 1) + 1;			//Generate a random number between 1 & 10 for the current floor
-//			
-//			int pick = new Random().nextInt(Direction.values().length);
-//			Direction floorButton = Direction.values()[pick];			//Generate a random direction from the "Direction" class(i.e up or down)
-//			
-//			int carButton = rand.nextInt((9) + 1) + 1;				//Generate a random number between 1 & 10 for the destination floor
-//			
-//			
-//			FloorData data = new FloorData(time, floorNumber, floorButton, carButton);
-//			
-//			scheduler.sendFloorData(data);
-//			try {
-//				Thread.sleep((long)5000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}

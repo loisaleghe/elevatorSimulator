@@ -82,11 +82,12 @@ public class ElevatorSubsystem extends Thread {
 
 			// Notify the scheduler of elevator's arrival on a floor
 			System.out.println("== Elevator Subsystem " + this.number + ": Notifyng schedular of elevator arrival");
-			this.sendSocket.send(elevatorRequestPacket);		
+			this.sendSocket.send(elevatorRequestPacket);
+			
 		} catch (IOException e) {
 			System.err.println("== Elevator Subsystem " + this.number + ": An error occured while sending request to scheduler");
 			e.printStackTrace();
-		} 
+		}
 	}
 
 	@Override
@@ -99,6 +100,8 @@ public class ElevatorSubsystem extends Thread {
 			DatagramPacket elevatorReplyPacket = new DatagramPacket(elevatorReplyData, elevatorReplyData.length);
 
 			try {
+				Thread.sleep(2000);
+
 				// Receive floor requests from scheduler
 				System.out.println("== Elevator Subsystem " + this.number + ": Waiting for floor requests from scheduler...");
 				this.receiveSocket.receive(elevatorReplyPacket);
@@ -137,14 +140,19 @@ public class ElevatorSubsystem extends Thread {
 			} catch (ClassNotFoundException e) {
 				System.err.println("== Elevator Subsystem " + this.number + ": An error occured...");
 				e.printStackTrace();
+			} catch (InterruptedException e) {
+				System.err.println("== Elevator Subsystem " + this.number + ": An error occured...");
+				e.printStackTrace();
 			}
 		}
 	}
 
 	public static void main(String [] args) {
+		// Instantiating three elevator subsystems representing three elevators
 		ElevatorSubsystem es1 = new ElevatorSubsystem(1);
 		ElevatorSubsystem es2 = new ElevatorSubsystem(2);
 		ElevatorSubsystem es3 = new ElevatorSubsystem(3);
+		
 		es1.start();
 		es2.start();
 		es3.start();

@@ -5,6 +5,10 @@ LINK TO REPOSITORY
 ****************************
 https://github.com/loisaleghe/elevatorSimulator
 
+DEMO VIDEO LINK
+*****************************
+https://mediaspace.carleton.ca/media/Kaltura+Capture+recording+-+April+6th+2020%2C+3A03A50+pm/1_dt0b2hwl
+
 Group Members
 ***********************
 * Abdul-Rahmaan Rufai
